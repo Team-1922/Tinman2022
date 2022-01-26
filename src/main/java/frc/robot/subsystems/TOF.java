@@ -21,13 +21,12 @@ public class TOF extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    putDistance(); // this line fixes stuff, dont remove
+
   }
 
   public void putDistance(){
-    SmartDashboard.putNumber("TOFLeft", TOFLeft.getRange());
-    SmartDashboard.putNumber("TOFRight", TOFRight.getRange());
+    SmartDashboard.putNumber("TOFLeft16", TOFLeft.getRange());
+    SmartDashboard.putNumber("TOFRight16", TOFRight.getRange());
   }
 
   public double getDistanceLeft(){

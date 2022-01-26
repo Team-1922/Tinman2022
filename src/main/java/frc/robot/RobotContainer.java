@@ -8,9 +8,12 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.Auto_forward;
+import frc.robot.commands.NearLight;
 import frc.robot.commands.TOFDistance;
 import frc.robot.commands.TankDrive;
+import frc.robot.commands.XboxTankDrive;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.LED;
 import frc.robot.subsystems.TOF;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -25,17 +28,26 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 private final XboxController m_XBoxController = new XboxController(2);
 private final TOF m_TOF = new TOF();
+private final LED m_LED = new LED();
 private final TOFDistance m_TOFDistance = new TOFDistance(m_TOF);
   private final DriveTrain m_driveTrain = new DriveTrain();
   private final Joystick m_joystickLeft = new Joystick(1);
   private final Joystick m_joystickRight = new Joystick(0);
   private final TankDrive m_tankDrive = new TankDrive(m_driveTrain, m_joystickLeft, m_joystickRight);
+  private final XboxTankDrive m_XboxTankDrive = new XboxTankDrive(m_driveTrain, m_XBoxController);
+  private final NearLight m_nearLight = new NearLight(m_TOF, m_LED);
+
+
+
+
+  //auto stuff
   private final Auto_forward m_autoForward = new Auto_forward(m_driveTrain);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    m_driveTrain.setDefaultCommand(m_tankDrive);
+    m_driveTrain.setDefaultCommand(m_XboxTankDrive);
+    m_TOF.setDefaultCommand(m_TOFDistance);
     
    
 
@@ -52,6 +64,9 @@ private final TOFDistance m_TOFDistance = new TOFDistance(m_TOF);
   private void configureButtonBindings() {
     new JoystickButton(m_XBoxController, 1) //A
     .whenPressed(m_autoForward);
+
+    new JoystickButton(m_XBoxController, 2) //B
+    .whenPressed(m_nearLight);
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

@@ -4,50 +4,54 @@
 
 package frc.robot.commands;
 
-import javax.management.MBeanAttributeInfo;
+import com.playingwithfusion.TimeOfFlight.RangingMode;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrain;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.subsystems.LED;
+import frc.robot.subsystems.TOF;
 
-public class Auto_forward extends CommandBase {
-  private double newEncoder;
-  private double encoder;
-  private DriveTrain m_driveTrain;
-  /** Creates a new Auto_forward. */
-  public Auto_forward(DriveTrain driveTrain) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    m_driveTrain=driveTrain;
-  addRequirements(m_driveTrain);
+
+
+
+public class NearLight extends CommandBase {
+  /** Creates a new NearLight. */
+  TOF m_TOF;
+LED m_LED;
+  public NearLight(TOF TOF, LED LED) {
+    m_TOF = TOF;
+    m_LED = LED;
+    // Use addRequirements(requirements);) here to declare subsystem dependencies.
+    addRequirements(m_LED, m_TOF);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    encoder=m_driveTrain.getLeftEncoder();
+   // m_TOF.setRangingMode(RangingMode.Long, 500);
   }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   //.addchild .addchild .addchild
-   newEncoder=m_driveTrain.getLeftEncoder();
-   m_driveTrain.drive(-.25,-.25);
+    if ( m_TOF.getDistanceLeft()<=500 || m_TOF.getDistanceRight()<=500){
+//doesn't make lead paint
+    m_LED.lightUp(1,0,0);
+    } else {
+      m_LED.lightUp(0,1,0);
+    }
   }
- 
 
   // Called once the command ends or is interrupted.
   @Override
+  
   public void end(boolean interrupted) {
-    m_driveTrain.drive(0,0);
+    m_LED.lightUp(0,0,0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-if (newEncoder-encoder>=36){
-  return true;
-}
-
     return false;
-    
   }
 }
