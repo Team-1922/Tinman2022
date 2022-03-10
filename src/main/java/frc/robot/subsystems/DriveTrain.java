@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -41,11 +42,20 @@ public class DriveTrain extends SubsystemBase {
     SupplyCurrentLimitConfiguration motorlimit = 
     new SupplyCurrentLimitConfiguration(true,  30, 35,  0.25);
 
+    StatorCurrentLimitConfiguration statorLimit = new StatorCurrentLimitConfiguration(true, 60, 60, .2);
+
+
 
     rearLeft.configSupplyCurrentLimit(motorlimit);
     frontLeft.configSupplyCurrentLimit(motorlimit);
     rearRight.configSupplyCurrentLimit(motorlimit);
     frontRight.configSupplyCurrentLimit(motorlimit);
+
+
+    frontLeft.configStatorCurrentLimit(statorLimit);
+    rearLeft.configStatorCurrentLimit(statorLimit);
+    frontRight.configStatorCurrentLimit(statorLimit);
+    rearRight.configStatorCurrentLimit(statorLimit);
     
      
    
