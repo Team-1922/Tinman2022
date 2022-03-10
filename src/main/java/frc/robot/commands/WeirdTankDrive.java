@@ -4,47 +4,40 @@
 
 package frc.robot.commands;
 
-import javax.management.MBeanAttributeInfo;
-
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
-public class Auto_forward extends CommandBase {
-  private double newEncoder;
-  private double encoder;
-  private DriveTrain m_driveTrain;
-  /** Creates a new Auto_forward. */
-  public Auto_forward(DriveTrain driveTrain) {
+public class WeirdTankDrive extends CommandBase {
+  DriveTrain m_drivetrain;
+  Joystick m_joystickLeft;
+  Joystick m_joystickRight;
+  /** Creates a new JoystickTankDrive. */
+  public WeirdTankDrive(DriveTrain drivetrain, Joystick JoystickLeft, Joystick JoystickRight) {
+    m_drivetrain = drivetrain;
+    m_joystickLeft = JoystickLeft;
+    m_joystickRight = JoystickRight;
     // Use addRequirements() here to declare subsystem dependencies.
-    m_driveTrain = driveTrain;
-  addRequirements(m_driveTrain);
+    addRequirements(m_drivetrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    encoder = m_driveTrain.getLeftEncoder();
-  }
+  public void initialize() {}
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-   newEncoder = m_driveTrain.getLeftEncoder();
-   m_driveTrain.drive(.25, .25);
+    m_drivetrain.drive(m_joystickLeft.getRawAxis(3)*.2, m_joystickRight.getRawAxis(3)*.2);
   }
- 
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    m_driveTrain.drive(0, 0);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-return (Math.abs(newEncoder - encoder) >= 75);
-
-    
+    return false;
   }
 }

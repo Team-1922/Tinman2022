@@ -35,7 +35,7 @@ addRequirements(m_drivetrain);
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drivetrain.drive(m_XboxController.getRawAxis(1)*.20, m_XboxController.getRawAxis(5)*.20);
+    m_drivetrain.drive(-m_XboxController.getRawAxis(1)*.20, -m_XboxController.getRawAxis(3)*.20);
  
     encoderLeft = m_drivetrain.getLeftEncoder();
     encoderRight =  m_drivetrain.getRightEncoder();

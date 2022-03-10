@@ -13,14 +13,40 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    //drivetrain
     public static final int frontLeft = 1;
     public static final int frontRight = 2;
     public static final int rearLeft = 3;
     public static final int rearRight = 4;
 
+    // Collector
+
+    public static final int collectorMotor = 8;
+    public static final int collectorSolenoid = 5;
+
+    // Transfer
+
+    public static final int transferSides = 10;
+    public static final int transferFront = 11;
+    public static final int transferRear = 12;
 
 
-    public static final double encoderInchConversion = 8100 / 12.5;
-	public static final int TOFRight = 1;
-	public static final int TOFLeft = 0;
+        //we still need to check the conversion later
+    public static final double encoderInchConversion = 14500 / 18.8;
+    
+	public static final int TOFRight = 11;
+	public static final int TOFLeft = 10;
+
+
+    //elevator 
+            
+     public static final int elevator1 =13;
+     public static final int elevator2 = 14;
+     
+
+
+    //climber
+        
+
+
 }

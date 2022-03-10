@@ -4,47 +4,51 @@
 
 package frc.robot.commands;
 
-import javax.management.MBeanAttributeInfo;
-
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Elevator;
 
-public class Auto_forward extends CommandBase {
-  private double newEncoder;
-  private double encoder;
-  private DriveTrain m_driveTrain;
-  /** Creates a new Auto_forward. */
-  public Auto_forward(DriveTrain driveTrain) {
+public class AutoBrakes extends CommandBase {
+  Elevator m_elevator;
+  double posGoal;
+  /** Creates a new AutoBrakes. */
+  public AutoBrakes(Elevator elevator) {
+    m_elevator = elevator;
     // Use addRequirements() here to declare subsystem dependencies.
-    m_driveTrain = driveTrain;
-  addRequirements(m_driveTrain);
+    addRequirements(m_elevator);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    encoder = m_driveTrain.getLeftEncoder();
+    NetworkTable ozram = NetworkTableInstance.getDefault().getTable("OzRam");
+    posGoal = ozram.getEntry("ElevatorRotations").getDouble(0) * 2048;
+
   }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-   newEncoder = m_driveTrain.getLeftEncoder();
-   m_driveTrain.drive(.25, .25);
+  /*  if(m_elevator.trajectory() >= posGoal - 50){
+      m_elevator.brakeDown();
+    }
+    */
   }
- 
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_driveTrain.drive(0, 0);
+    m_elevator.brakeUp();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-return (Math.abs(newEncoder - encoder) >= 75);
-
-    
+  /*  if(m_elevator.trajectory() <= 50){
+      return true;
+    }
+    */
+    return false;
   }
 }

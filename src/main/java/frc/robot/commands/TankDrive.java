@@ -7,7 +7,7 @@ package frc.robot.commands;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+//import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /** An example command that uses an example subsystem. */
 public class TankDrive extends CommandBase {
@@ -18,6 +18,8 @@ public class TankDrive extends CommandBase {
 
   private double leftEncoder;
   private double rightEncoder;
+// it is used just ignore it
+// no clue why its like that 
 
   /**
    * Creates a new ExampleCommand.

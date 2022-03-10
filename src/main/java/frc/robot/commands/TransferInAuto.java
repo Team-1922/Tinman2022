@@ -4,47 +4,49 @@
 
 package frc.robot.commands;
 
-import javax.management.MBeanAttributeInfo;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.TOF;
+import frc.robot.subsystems.Transfer;
 
-public class Auto_forward extends CommandBase {
-  private double newEncoder;
-  private double encoder;
-  private DriveTrain m_driveTrain;
-  /** Creates a new Auto_forward. */
-  public Auto_forward(DriveTrain driveTrain) {
+public class TransferInAuto extends CommandBase {
+
+  Transfer m_transfer;
+
+  /** Creates a new TransferOut. */
+  public TransferInAuto(Transfer transfer) {
+    m_transfer = transfer;
+    
+
+    addRequirements(m_transfer);
+
     // Use addRequirements() here to declare subsystem dependencies.
-    m_driveTrain = driveTrain;
-  addRequirements(m_driveTrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    encoder = m_driveTrain.getLeftEncoder();
-  }
+  public void initialize() {}
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    
+      m_transfer.sideMotor(6000); 
+      m_transfer.frontMotor(6000); 
+      m_transfer.rearMotor(6000);
 
-   newEncoder = m_driveTrain.getLeftEncoder();
-   m_driveTrain.drive(.25, .25);
   }
- 
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_driveTrain.drive(0, 0);
+    m_transfer.sideMotor(0); // Later on adjust speed, direction if needed 
+    m_transfer.frontMotor(0);
+    m_transfer.rearMotor(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-return (Math.abs(newEncoder - encoder) >= 75);
-
-    
+    return false;
   }
 }

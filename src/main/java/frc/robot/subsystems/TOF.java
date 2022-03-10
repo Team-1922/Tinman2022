@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class TOF extends SubsystemBase {
+  private boolean leftStatus;
+  private boolean rightStatus;
 
   private TimeOfFlight TOFLeft = new TimeOfFlight(Constants.TOFLeft);
   private TimeOfFlight TOFRight = new TimeOfFlight(Constants.TOFRight);
@@ -21,7 +23,23 @@ public class TOF extends SubsystemBase {
 
   @Override
   public void periodic() {
+/*
+if (TOFLeft.getRange() <= 15){
+  leftStatus = true;
+} else leftStatus = false;
 
+SmartDashboard.putBoolean("LeftStatus", leftStatus);
+
+
+if (TOFRight.getRange() <= 15){
+  rightStatus = true;
+} else rightStatus = false;
+
+SmartDashboard.putBoolean("RightStatus", rightStatus);
+
+SmartDashboard.putNumber("TOF_Left", TOFLeft.getRange());
+SmartDashboard.putNumber("TOF_Right", TOFRight.getRange());
+*/
   }
 
   public void putDistance(){

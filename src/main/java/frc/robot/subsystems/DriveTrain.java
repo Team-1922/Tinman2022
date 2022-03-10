@@ -7,12 +7,16 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+
 
 public class DriveTrain extends SubsystemBase {
   private WPI_TalonFX frontLeft = new WPI_TalonFX(Constants.frontLeft);
@@ -20,16 +24,33 @@ public class DriveTrain extends SubsystemBase {
   private WPI_TalonFX rearLeft = new WPI_TalonFX(Constants.rearLeft);
   private WPI_TalonFX rearRight = new WPI_TalonFX(Constants.rearRight);
 
+  private AHRS ahrs = new AHRS(SPI.Port.kMXP);
+
   private double inchConversion = Constants.encoderInchConversion;
 
   /** Creates a new ExampleSubsystem. */
   public DriveTrain() {
     rearLeft.set(ControlMode.Follower, frontLeft.getDeviceID());
     rearRight.set(ControlMode.Follower, frontRight.getDeviceID());
-    frontRight.setInverted(TalonFXInvertType.CounterClockwise);
+    frontRight.setInverted(TalonFXInvertType.Clockwise);
     rearRight.setInverted(InvertType.FollowMaster);
-    frontLeft.setInverted(TalonFXInvertType.Clockwise);
+    frontLeft.setInverted(TalonFXInvertType.CounterClockwise);
     rearLeft.setInverted(InvertType.FollowMaster);
+   
+
+    SupplyCurrentLimitConfiguration motorlimit = 
+    new SupplyCurrentLimitConfiguration(true,  30, 35,  0.25);
+
+
+    rearLeft.configSupplyCurrentLimit(motorlimit);
+    frontLeft.configSupplyCurrentLimit(motorlimit);
+    rearRight.configSupplyCurrentLimit(motorlimit);
+    frontRight.configSupplyCurrentLimit(motorlimit);
+    
+     
+   
+  
+  
 
     frontLeft.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
     frontRight.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
@@ -58,8 +79,17 @@ public class DriveTrain extends SubsystemBase {
 
     }
 
+    public double robotAngle(){
+      return ahrs.getAngle();
+    }
+
+
   @Override
   public void periodic() {
+    //double angle = ahrs.getAngle();
+    //SmartDashboard.putNumber("RobotAngle", angle);
+
+    //SmartDashboard.putNumber("LeftEncoder16", frontLeft.getSelectedSensorPosition());
     // This method will be called once per scheduler run
   }
 
