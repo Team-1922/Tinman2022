@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -16,8 +17,8 @@ import frc.robot.Constants;
 public class Transfer extends SubsystemBase {
 
   private WPI_TalonFX sides = new WPI_TalonFX(Constants.transferSides);
-  private WPI_TalonSRX front = new WPI_TalonSRX(Constants.transferFront);
-  private WPI_TalonSRX rear = new WPI_TalonSRX(Constants.transferRear);
+  private WPI_TalonFX front = new WPI_TalonFX(Constants.transferFront);
+  private WPI_TalonFX rear = new WPI_TalonFX(Constants.transferRear);
   /** Creates a new Transfer. */
   public Transfer() {
     sides.setNeutralMode(NeutralMode.Coast);
@@ -25,8 +26,11 @@ public class Transfer extends SubsystemBase {
     rear.setNeutralMode(NeutralMode.Coast);
 
 
-    front.configPeakCurrentLimit(120);
-    rear.configPeakCurrentLimit(120);
+    SupplyCurrentLimitConfiguration transferLimit = new SupplyCurrentLimitConfiguration(true, 20, 25, 0.25);
+
+ //front.configSupplyCurrentLimit(transferLimit);
+ //rear.configSupplyCurrentLimit(transferLimit);
+  
   }
 
   @Override
@@ -42,11 +46,13 @@ public class Transfer extends SubsystemBase {
   }
 
   public void frontMotor(double speed){
-    front.set(speed);
+   front.set(ControlMode.PercentOutput, .5);
+    //front.set(ControlMode.Velocity, speed);
   }
 
   public void rearMotor(double speed){
-    rear.set(speed);
+    rear.set(ControlMode.PercentOutput, .5);
+    //rear.set(ControlMode.Velocity, speed);
   }
 
   public double transferVelocity(){

@@ -46,8 +46,8 @@ public class Elevator extends SubsystemBase {
 
     motor2.set(ControlMode.Follower, motor1.getDeviceID());
 
-    motor1.configMotionCruiseVelocity(50000);
-    motor1.configMotionAcceleration(25000);
+    motor1.configMotionCruiseVelocity(35000);
+    motor1.configMotionAcceleration(15000);
     motor1.configMotionSCurveStrength(4);
 
     

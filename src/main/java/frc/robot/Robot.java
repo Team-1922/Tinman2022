@@ -32,18 +32,7 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
   
-/*
-    XboxController m_xbox = new XboxController(2);
-    Joystick joystickLeft = new Joystick(1);
-    Joystick joystickRight = new Joystick(0);
 
-    NetworkTable ozram = NetworkTableInstance.getDefault().getTable("OzRam");
-
-
-    WPI_TalonFX elevator1 = new WPI_TalonFX(Constants.elevator1);
-    WPI_TalonFX elevator2 = new WPI_TalonFX(Constants.elevator2);
-    Solenoid elevatorSolenoid = new Solenoid(0, PneumaticsModuleType.CTREPCM, 0);
-*/
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -54,15 +43,6 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     
-/*
-    elevator2.set(ControlMode.Follower, elevator1.getDeviceID());
-    elevator1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
-
-
-    elevator1.configMotionCruiseVelocity(50000);
-    elevator1.configMotionAcceleration(25000);
-    elevator1.configMotionSCurveStrength(4);
-*/
 
   }
 
@@ -100,43 +80,11 @@ public class Robot extends TimedRobot {
     }
   }
 
-  //private double posGoal = 0;
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() { 
-
-    /*
-    TOF TOF = new TOF();
-   
-    double elevatorRotations = 2048 * ozram.getEntry("ElevatorRotations").getDouble(10);
-
- 
-      if(TOF.getDistanceLeft() <= 150 || TOF.getDistanceRight() <= 150){
-        
-        posGoal = elevatorRotations;
-        elevator1.set(ControlMode.MotionMagic, posGoal);
-
-      }
   
-      if(TOF.getDistanceLeft() > 150){
-        
-        posGoal = 0;
-        elevator1.set(ControlMode.MotionMagic, posGoal);
-
-    }
-
-    if(elevator1.getActiveTrajectoryPosition() != posGoal && elevator1.getActiveTrajectoryPosition() > -1000){
-      elevatorSolenoid.set(true);
-    } else {
-      elevatorSolenoid.set(false);
-    }
-  
-    if(elevator1.getActiveTrajectoryPosition() == posGoal){
-      elevator1.set(ControlMode.PercentOutput, 0);
-  
-    }
-*/
 
   }
   
@@ -149,10 +97,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     
-      //elevatorSolenoid.set(false);
     }
 
-   // elevator1.set(ControlMode.MotionMagic, 0);
 
   }
 
@@ -161,53 +107,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     
-/*
-    double leftTrigger = m_xbox.getLeftTriggerAxis();
-    double rightTrigger = m_xbox.getRightTriggerAxis();
-
-    // boolean left5 = joystickLeft.getRawButton(5);
-    // boolean left6 = joystickLeft.getRawButton(6);
-
-    boolean xbox9 = m_xbox.getRawButton(9);
-    boolean xbox10 = m_xbox.getRawButton(10);
-
-
-    double elevatorRotations = 2048 * ozram.getEntry("ElevatorRotations").getDouble(10);
-
-    // SmartDashboard.putNumber("TrajectoryPosition", elevator1.getActiveTrajectoryPosition());
-
-    if (xbox9 == true && xbox10 == true){
-      posGoal = 0;
-      elevator1.set(ControlMode.MotionMagic, posGoal);
-    } else {
-
-    if(xbox9 == true){
-      posGoal = elevatorRotations;
-      elevator1.set(ControlMode.MotionMagic, posGoal);
-    }
-
-    if(xbox10 == true){
-      posGoal = 0;
-      elevator1.set(ControlMode.MotionMagic, posGoal);
-    }
-
-    if(elevator1.getActiveTrajectoryPosition() != posGoal){
-      elevatorSolenoid.set(true);
-    } else {
-      elevatorSolenoid.set(false);
-    }
-  }
-
-  if(elevator1.getActiveTrajectoryPosition() == posGoal){
-    elevator1.set(ControlMode.PercentOutput, 0);
-
-  }
-
-
-    SmartDashboard.putNumber("TriggerLeft", leftTrigger);
-    SmartDashboard.putNumber("TriggerRight", rightTrigger);
-
-*/
 
 
   }

@@ -41,6 +41,7 @@ SmartDashboard.putNumber("TOF_Left", TOFLeft.getRange());
 SmartDashboard.putNumber("TOF_Right", TOFRight.getRange());
 */
   }
+  
 
   public void putDistance(){
     SmartDashboard.putNumber("TOFLeft16", TOFLeft.getRange());
@@ -49,9 +50,11 @@ SmartDashboard.putNumber("TOF_Right", TOFRight.getRange());
 
   public double getDistanceLeft(){
     return TOFLeft.getRange();
+
   }
 
   public double getDistanceRight(){
     return TOFRight.getRange();
+
   }
 }

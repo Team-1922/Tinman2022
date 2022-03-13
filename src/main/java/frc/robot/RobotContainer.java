@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.AutoBrakes;
 import frc.robot.commands.Auto_forward;
 import frc.robot.commands.BallAim;
@@ -80,6 +81,8 @@ private final Elevator m_elevator = new Elevator();
 private final Climber m_climber = new Climber();
 private final CompressorSubsystem m_compressorSubsystem = new CompressorSubsystem();
 
+private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<CommandBase>();
+
 
   private final TOFDistance m_TOFDistance = new TOFDistance(m_TOF);
   private final DriveTrain m_driveTrain = new DriveTrain();
@@ -117,23 +120,9 @@ private final CompressorSubsystem m_compressorSubsystem = new CompressorSubsyste
   private final AutoBrakes m_autoBrakes = new AutoBrakes(m_elevator);
   private final Turn m_turn = new Turn(m_driveTrain);
   private final TargetGet m_targetGet = new TargetGet(m_driveTrain);
-
-  // Command Groups
-
-  /*
-  private final ParallelCommandGroup m_intake = new ParallelCommandGroup(m_collectorOut, m_transferIn);
-
-  private final ParallelCommandGroup m_goIntake = new ParallelCommandGroup(m_intake, m_ballGet);
-  private final SequentialCommandGroup m_pickup = new SequentialCommandGroup(m_ballAim, m_goIntake);
-  // put these into command factories
-  */
-    
-
-
-
-
-  //auto stuff
   private final Auto_forward m_autoForward = new Auto_forward(m_driveTrain);
+
+
 
 
   private final SequentialCommandGroup ElevatorUp(){
@@ -146,9 +135,6 @@ private final CompressorSubsystem m_compressorSubsystem = new CompressorSubsyste
 
     return elevatorUp;
   }
-
-
-
   
   private final SequentialCommandGroup ElevatorDown(){
 
@@ -174,7 +160,6 @@ private final CompressorSubsystem m_compressorSubsystem = new CompressorSubsyste
 
     return elevatorUp;
   }
-
 
   private final SequentialCommandGroup ElevatorDownClimb(){
 
@@ -245,8 +230,8 @@ private final CompressorSubsystem m_compressorSubsystem = new CompressorSubsyste
     ParallelDeadlineGroup ballGrab = new ParallelDeadlineGroup(m_ballGet, m_collectorOut, m_transferIn);
     SequentialCommandGroup elevator = new SequentialCommandGroup(ElevatorUp(), transferOutput, ElevatorDown());
 
-    SequentialCommandGroup auto2 = new SequentialCommandGroup(elevator, m_autoForward//, ballGrab);
-    );
+    SequentialCommandGroup auto2 = new SequentialCommandGroup(elevator, ballGrab);
+    
 
     
 
@@ -259,6 +244,8 @@ private final CompressorSubsystem m_compressorSubsystem = new CompressorSubsyste
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
    // m_driveTrain.setDefaultCommand(m_XboxTankDrive);
+
+    //initTankChooser();
     m_driveTrain.setDefaultCommand(m_joystickTankDrive);
     m_TOF.setDefaultCommand(m_TOFDistance);
     
@@ -268,6 +255,15 @@ private final CompressorSubsystem m_compressorSubsystem = new CompressorSubsyste
     configureButtonBindings();
     initNetworkTable();
   }
+
+ /* private void initTankChooser(){
+    m_tankChooser.setDefaultOption("Joystick", m_joystickTankDrive);
+
+    m_tankChooser.addOption("XBox", m_XboxTankDrive);
+    m_tankChooser.addOption("Weird", m_weirdTankDrive);
+    SmartDashboard.putData("TankDrive", m_tankChooser);
+  }
+ */ 
 
   private void initNetworkTable(){
     NetworkTable table = NetworkTableInstance.getDefault().getTable("OzRam");
