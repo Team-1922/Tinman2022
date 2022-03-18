@@ -33,9 +33,9 @@ public class TransferOutFront extends CommandBase {
   public void initialize() {
     NetworkTable ozram = NetworkTableInstance.getDefault().getTable("OzRam");
 
-    rearOutput = ozram.getEntry("RearOutput").getDouble(.75);
-    frontOutput = ozram.getEntry("FrontOutput").getDouble(.75);
-    sideOutput = ozram.getEntry("SideOutput").getDouble(.55);
+    rearOutput = ozram.getEntry("RearOutput").getDouble(500);
+    frontOutput = ozram.getEntry("FrontOutput").getDouble(500);
+    sideOutput = ozram.getEntry("SideOutput").getDouble(500);
 
   }
 

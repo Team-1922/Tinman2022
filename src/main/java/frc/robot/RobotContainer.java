@@ -244,9 +244,8 @@ private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<C
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
    // m_driveTrain.setDefaultCommand(m_XboxTankDrive);
-
-    //initTankChooser();
     m_driveTrain.setDefaultCommand(m_joystickTankDrive);
+    
     m_TOF.setDefaultCommand(m_TOFDistance);
     
    
@@ -256,14 +255,7 @@ private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<C
     initNetworkTable();
   }
 
- /* private void initTankChooser(){
-    m_tankChooser.setDefaultOption("Joystick", m_joystickTankDrive);
 
-    m_tankChooser.addOption("XBox", m_XboxTankDrive);
-    m_tankChooser.addOption("Weird", m_weirdTankDrive);
-    SmartDashboard.putData("TankDrive", m_tankChooser);
-  }
- */ 
 
   private void initNetworkTable(){
     NetworkTable table = NetworkTableInstance.getDefault().getTable("OzRam");
@@ -300,13 +292,13 @@ private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<C
     // set to .6
 
     NetworkTableEntry sideOutput = table.getEntry("SideOutput");
-    sideOutput.setNumber(8000);
+    sideOutput.setNumber(18000);
 
     NetworkTableEntry rearOutput = table.getEntry("RearOutput");
-    rearOutput.setNumber(10000);
+    rearOutput.setNumber(20000);
 
     NetworkTableEntry frontOutput = table.getEntry("FrontOutput");
-    frontOutput.setNumber(10000);
+    frontOutput.setNumber(20000);
   }
 
 

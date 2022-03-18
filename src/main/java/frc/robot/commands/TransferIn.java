@@ -21,7 +21,7 @@ public class TransferIn extends CommandBase {
     addRequirements(m_transfer, m_TOF);
 
     // Use addRequirements() here to declare subsystem dependencies.
-  }
+  } 
 
   // Called when the command is initially scheduled.
   @Override
@@ -31,19 +31,19 @@ public class TransferIn extends CommandBase {
   @Override
   public void execute() {
 
- //   if (m_TOF.getDistanceRight() > 1 && m_TOF.getDistanceRight() < 150){
-      m_transfer.sideMotor(6000); 
-      m_transfer.frontMotor(60000); 
-      m_transfer.rearMotor(60000);
- //   } else if (m_TOF.getDistanceRight() < 200){
- //     m_transfer.sideMotor(6000); 
- //     m_transfer.frontMotor(6000); 
- //     m_transfer.rearMotor(0);
- //   } else {
- //   m_transfer.sideMotor(4000); // Later on adjust speed, direction if needed 
- //   m_transfer.frontMotor(6000); 
- //   m_transfer.rearMotor(-6000);
-  //  }
+    /*if (m_TOF.getDistanceRight() > 1 && m_TOF.getDistanceRight() < 30){
+      m_transfer.sideMotor(20000); 
+      m_transfer.frontMotor(-25000); 
+      m_transfer.rearMotor(25000);
+    } else*/ if (m_TOF.getDistanceRight() < 90){
+      m_transfer.sideMotor(20000); 
+      m_transfer.frontMotor(25000); 
+      m_transfer.rearMotor(0);
+    } else {
+    m_transfer.sideMotor(20000); // Later on adjust speed, direction if needed 
+    m_transfer.frontMotor(25000); 
+    m_transfer.rearMotor(-8000);
+    }
 
   }
 
