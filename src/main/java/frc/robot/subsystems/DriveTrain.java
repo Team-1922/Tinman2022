@@ -20,10 +20,10 @@ import frc.robot.Constants;
 
 
 public class DriveTrain extends SubsystemBase {
-  private WPI_TalonFX frontLeft = new WPI_TalonFX(Constants.frontLeft);
-  private WPI_TalonFX frontRight = new WPI_TalonFX(Constants.frontRight);
-  private WPI_TalonFX rearLeft = new WPI_TalonFX(Constants.rearLeft);
-  private WPI_TalonFX rearRight = new WPI_TalonFX(Constants.rearRight);
+  private WPI_TalonFX frontLeft = new WPI_TalonFX(Constants.frontLeft, "DriveBase");
+  private WPI_TalonFX frontRight = new WPI_TalonFX(Constants.frontRight, "DriveBase");
+  private WPI_TalonFX rearLeft = new WPI_TalonFX(Constants.rearLeft, "DriveBase");
+  private WPI_TalonFX rearRight = new WPI_TalonFX(Constants.rearRight, "DriveBase");
 
   private AHRS ahrs = new AHRS(SPI.Port.kMXP);
 
