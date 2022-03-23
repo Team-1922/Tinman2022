@@ -36,7 +36,9 @@ public class JoystickTankDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drivetrain.drive(-m_joystickLeft.getY()*tankSpeed, -m_joystickRight.getY()*tankSpeed);
+    m_drivetrain.drive((m_joystickLeft.getY()*0.6-m_joystickRight.getX()*0.5*(1-Math.abs(m_joystickLeft.getY()/3))*0.5),(m_joystickLeft.getY()*0.6+m_joystickRight.getX()*0.5*(1-Math.abs(m_joystickLeft.getY()/3))*0.5));
+
+   // m_drivetrain.drive(-m_joystickLeft.getY()*tankSpeed, -m_joystickRight.getY()*tankSpeed);
   }
 
   // Called once the command ends or is interrupted.
