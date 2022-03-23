@@ -48,6 +48,7 @@ import frc.robot.commands.TransferOutRear;
 import frc.robot.commands.Turn;
 import frc.robot.commands.WeirdTankDrive;
 import frc.robot.commands.XboxTankDrive;
+import frc.robot.commands.backToHub;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.CompressorSubsystem;
@@ -230,7 +231,7 @@ private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<C
     ParallelDeadlineGroup ballGrab = new ParallelDeadlineGroup(m_ballGet, m_collectorOut, m_transferIn);
     SequentialCommandGroup elevator = new SequentialCommandGroup(ElevatorUp(), transferOutput, ElevatorDown());
 
-    SequentialCommandGroup auto2 = new SequentialCommandGroup(elevator, ballGrab);
+    SequentialCommandGroup auto2 = new SequentialCommandGroup(elevator, m_autoForward);
     
 
     
@@ -239,7 +240,27 @@ private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<C
 
   }
 
+private SequentialCommandGroup ThirdAuto(){
+  TransferOutFront m_transferOut = new TransferOutFront(m_transfer, m_TOF);
+  ParallelDeadlineGroup transferOutput = new ParallelDeadlineGroup(new WaitCommand(2), m_transferOut);
+  SequentialCommandGroup elevator = new SequentialCommandGroup(ElevatorUp(), transferOutput, ElevatorDown());
+  CollectorOut m_collectorOut = new CollectorOut(m_collector);
+  TransferInAuto m_transferIn = new TransferInAuto(m_transfer);
 
+SequentialCommandGroup secondauto = SecondAuto();
+BallGet m_ballGet = new BallGet(m_driveTrain, m_TOF);
+
+ParallelDeadlineGroup ballGrab = new ParallelDeadlineGroup(m_ballGet, m_collectorOut, m_transferIn);
+
+SequentialCommandGroup backToHub = new SequentialCommandGroup();
+SequentialCommandGroup AutoThree = new SequentialCommandGroup(ballGrab,new Turn(m_driveTrain), new backToHub(m_driveTrain),elevator);
+
+
+//BallGet m_ballGet = new BallGet(m_driveTrain, m_TOF);
+
+
+return AutoThree;
+}
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -377,6 +398,6 @@ private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<C
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return SecondAuto();
+    return ThirdAuto();
   }
 }

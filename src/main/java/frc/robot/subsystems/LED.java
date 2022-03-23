@@ -24,5 +24,4 @@ public class LED extends SubsystemBase {
     canifier.setLEDOutput(B, CANifier.LEDChannel.LEDChannelC);
   } // Redo which colors correlate to which channels if we do a new canifier
 
-
 }

@@ -35,12 +35,16 @@ public class TransferIn extends CommandBase {
       m_transfer.sideMotor(20000); 
       m_transfer.frontMotor(-25000); 
       m_transfer.rearMotor(25000);
-    } else*/ if (m_TOF.getDistanceRight() < 90){
-      m_transfer.sideMotor(20000); 
+    } else*/  if (m_TOF.getDistanceRight() < 90 && m_TOF.getDistanceLeft() < 90){
+      m_transfer.sideMotor(10000);
+      m_transfer.frontMotor(6000);
+      m_transfer.rearMotor(6000);
+    } else if (m_TOF.getDistanceRight() < 90){
+      m_transfer.sideMotor(15000); 
       m_transfer.frontMotor(25000); 
       m_transfer.rearMotor(0);
     } else {
-    m_transfer.sideMotor(20000); // Later on adjust speed, direction if needed 
+    m_transfer.sideMotor(15000); // Later on adjust speed, direction if needed 
     m_transfer.frontMotor(25000); 
     m_transfer.rearMotor(-8000);
     }
