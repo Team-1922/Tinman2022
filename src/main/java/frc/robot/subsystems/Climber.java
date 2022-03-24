@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Climber extends SubsystemBase {
  // private Solenoid climberSolenoid = new Solenoid(0, PneumaticsModuleType.CTREPCM, 2);
 
-  private Servo climberMotor = new Servo(2);
+  private Servo climberMotor = new Servo(0);
  
   
   /** Creates a new Climber. */
