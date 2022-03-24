@@ -16,6 +16,8 @@ public class JoystickTankDrive extends CommandBase {
   Joystick m_joystickRight;
 
   double tankSpeed;
+  double leftdrive;
+  double rightdrive;
   /** Creates a new JoystickTankDrive. */
   public JoystickTankDrive(DriveTrain drivetrain, Joystick JoystickLeft, Joystick JoystickRight) {
     m_drivetrain = drivetrain;
@@ -30,15 +32,30 @@ public class JoystickTankDrive extends CommandBase {
   public void initialize() {
   NetworkTable ozram = NetworkTableInstance.getDefault().getTable("OzRam");
   tankSpeed = ozram.getEntry("TankSpeed").getDouble(.25);
-
+ 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drivetrain.drive((m_joystickLeft.getY()*0.6-m_joystickRight.getX()*0.5*(1-Math.abs(m_joystickLeft.getY()/3))*0.5),(m_joystickLeft.getY()*0.6+m_joystickRight.getX()*0.5*(1-Math.abs(m_joystickLeft.getY()/3))*0.5));
 
-   // m_drivetrain.drive(-m_joystickLeft.getY()*tankSpeed, -m_joystickRight.getY()*tankSpeed);
+   // tonk drive
+   double joystickdriveleft =(-m_joystickLeft.getY()*tankSpeed);
+   double joystickdriveright= -m_joystickRight.getY()*tankSpeed;
+  
+  // arcade drive
+
+  double turningScale = 0.5*(1-Math.abs(m_joystickLeft.getY()/3))*0.5; 
+  double throttleScale = 0.6;
+
+
+   double arcadedrivepartone  = m_joystickLeft.getY()*throttleScale-m_joystickRight.getX()*turningScale;
+   double arcadedriveparttwo =m_joystickLeft.getY()*throttleScale+m_joystickRight.getX()*turningScale;
+
+   m_drivetrain.drive(arcadedrivepartone, arcadedriveparttwo);
+
+  
+   
   }
 
   // Called once the command ends or is interrupted.
