@@ -16,8 +16,7 @@ public class JoystickTankDrive extends CommandBase {
   Joystick m_joystickRight;
 
   double tankSpeed;
-  double leftdrive;
-  double rightdrive;
+ 
   /** Creates a new JoystickTankDrive. */
   public JoystickTankDrive(DriveTrain drivetrain, Joystick JoystickLeft, Joystick JoystickRight) {
     m_drivetrain = drivetrain;
