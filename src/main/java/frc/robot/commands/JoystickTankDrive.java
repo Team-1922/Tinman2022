@@ -51,7 +51,7 @@ public class JoystickTankDrive extends CommandBase {
    double arcadedrivepartone  = m_joystickLeft.getY()*throttleScale-m_joystickRight.getX()*turningScale;
    double arcadedriveparttwo =m_joystickLeft.getY()*throttleScale+m_joystickRight.getX()*turningScale;
 
-   m_drivetrain.drive(arcadedrivepartone, arcadedriveparttwo);
+   m_drivetrain.drive(-arcadedrivepartone, -arcadedriveparttwo);
 
   
    
