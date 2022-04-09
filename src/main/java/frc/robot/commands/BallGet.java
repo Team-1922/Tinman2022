@@ -14,8 +14,12 @@ import frc.robot.subsystems.TOF;
 public class BallGet extends CommandBase {
   DriveTrain m_drivetrain;
   TOF m_TOF;
-  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight-collect");
   NetworkTableEntry tx = table.getEntry("tx");
+  NetworkTableEntry ty = table.getEntry("ty");
+
+  NetworkTableEntry thor = table.getEntry("thor");
+  NetworkTableEntry tvert = table.getEntry("tvert");
 
   double error;
   double startingError;
@@ -27,6 +31,9 @@ public class BallGet extends CommandBase {
   double DGain;
 
   double speed;
+
+  double highSide;
+  double lowSide;
 
 
   /** Creates a new BallGet. */
@@ -44,20 +51,33 @@ public class BallGet extends CommandBase {
 
     PGain = ozram.getEntry("BallPGain").getDouble(.01);
     DGain = ozram.getEntry("BallDGain").getDouble(.01);
-    speed = ozram.getEntry("BallSpeed").getDouble(.25);
+    speed = ozram.getEntry("BallSpeed").getDouble(.15);
 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    if (thor.getDouble(0.0) > tvert.getDouble(0.0)){
+      highSide = thor.getDouble(0.0);
+      lowSide = tvert.getDouble(0.0);
+    } else {
+      highSide = tvert.getDouble(0.0);
+      lowSide = thor.getDouble(0.0);
+    }
+
+    if (ty.getDouble(0.0) < 0 && highSide / lowSide < 1.5 && highSide / lowSide > .5){
+    
     error = tx.getDouble(0.0);
-
     mod = (startingError - error) * DGain;
-
     response = (PGain * error) + mod;
 
-    m_drivetrain.drive(speed - response, speed + response);
+    m_drivetrain.drive((speed + response) * .7, (speed - response) * .7);
+
+    startingError = error;
+
+    } 
     
   }
 
@@ -71,9 +91,6 @@ public class BallGet extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_TOF.getDistanceLeft() <= 150){
-      return true;
-    }
-    return false;
+    return (ty.getDouble(0.0) <= -20);
   }
 }

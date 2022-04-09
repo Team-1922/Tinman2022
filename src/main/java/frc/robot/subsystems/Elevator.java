@@ -46,9 +46,9 @@ public class Elevator extends SubsystemBase {
 
     motor2.set(ControlMode.Follower, motor1.getDeviceID());
 
-    motor1.configMotionCruiseVelocity(50000);
-    motor1.configMotionAcceleration(23000);
-    motor1.configMotionSCurveStrength(5);
+    motor1.configMotionCruiseVelocity(70000);
+    motor1.configMotionAcceleration(24000);
+    motor1.configMotionSCurveStrength(4);
 
     //35000 15000 4
 
@@ -70,7 +70,7 @@ public void moveUp(double mode){
   if (mode == 1){
     posGoal = 2048 * ozram.getEntry("ElevatorRotations").getDouble(10);
   } else{
-    posGoal = 53.5 * 2048;
+    posGoal = 51.75 * 2048; // Was 53.5
   }
 
 

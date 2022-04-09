@@ -30,6 +30,7 @@ collectorSolenoid.set(true);
 
  public void reverse(){
    collectorMotor.set(-1);
+   collectorSolenoid.set(true);
  }
 
   public void stopCollect() {

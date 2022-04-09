@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
-public class JoystickTankDrive extends CommandBase {
+public class PlainJoystickTankDrive extends CommandBase {
   DriveTrain m_drivetrain;
   Joystick m_joystickLeft;
   Joystick m_joystickRight;
@@ -18,7 +18,7 @@ public class JoystickTankDrive extends CommandBase {
   double tankSpeed;
  
   /** Creates a new JoystickTankDrive. */
-  public JoystickTankDrive(DriveTrain drivetrain, Joystick JoystickLeft, Joystick JoystickRight) {
+  public PlainJoystickTankDrive(DriveTrain drivetrain, Joystick JoystickLeft, Joystick JoystickRight) {
     m_drivetrain = drivetrain;
     m_joystickLeft = JoystickLeft;
     m_joystickRight = JoystickRight;
@@ -38,20 +38,9 @@ public class JoystickTankDrive extends CommandBase {
   @Override
   public void execute() {
 
-   // tonk drive
-   double joystickdriveleft = -m_joystickLeft.getY()*tankSpeed;
-   double joystickdriveright= -m_joystickRight.getY()*tankSpeed;
-  
-  // arcade drive
+// because I do noooooot understand the new controls
 
-  double turningScale = 0.5*(1-Math.abs(m_joystickLeft.getY()/3))*0.5; 
-  double throttleScale = 0.6;
-
-
-   double arcadedrivepartone  = m_joystickLeft.getY()*throttleScale-m_joystickRight.getX()*turningScale;
-   double arcadedriveparttwo =m_joystickLeft.getY()*throttleScale+m_joystickRight.getX()*turningScale;
-
-   m_drivetrain.drive(-arcadedrivepartone, -arcadedriveparttwo);
+   m_drivetrain.drive(-m_joystickLeft.getY() * tankSpeed, -m_joystickRight.getY() * tankSpeed);
 
   
    

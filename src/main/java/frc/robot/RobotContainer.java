@@ -11,7 +11,12 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -32,13 +37,17 @@ import frc.robot.commands.ClimberDown;
 import frc.robot.commands.ClimberUp;
 import frc.robot.commands.CollectorOut;
 import frc.robot.commands.CollectorReverse;
+import frc.robot.commands.DistanceDrive;
+import frc.robot.commands.DriveKinematics;
 import frc.robot.commands.ElevateDown;
 import frc.robot.commands.ElevateDownClimb;
 import frc.robot.commands.ElevateUp;
 import frc.robot.commands.ElevateUpClimb;
 import frc.robot.commands.JoystickTankDrive;
 import frc.robot.commands.NearLight;
+import frc.robot.commands.PlainJoystickTankDrive;
 import frc.robot.commands.TOFDistance;
+import frc.robot.commands.TOFDrive;
 import frc.robot.commands.TankDrive;
 import frc.robot.commands.TargetGet;
 import frc.robot.commands.TransferIn;
@@ -49,6 +58,7 @@ import frc.robot.commands.Turn;
 import frc.robot.commands.WeirdTankDrive;
 import frc.robot.commands.XboxTankDrive;
 import frc.robot.commands.backToHub;
+import frc.robot.commands.goToBall;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.CompressorSubsystem;
@@ -65,6 +75,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.Elevator;
+import edu.wpi.first.wpilibj.SPI;
 /**
  * This class is where the hulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -82,18 +93,23 @@ private final Elevator m_elevator = new Elevator();
 private final Climber m_climber = new Climber();
 private final CompressorSubsystem m_compressorSubsystem = new CompressorSubsystem();
 
+private final AHRS m_ahrs = new AHRS(SPI.Port.kMXP);
+private final DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(-m_ahrs.getAngle()));
+
 private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<CommandBase>();
 
 
   private final TOFDistance m_TOFDistance = new TOFDistance(m_TOF);
-  private final DriveTrain m_driveTrain = new DriveTrain();
+  private final DriveTrain m_driveTrain = new DriveTrain(m_ahrs, m_odometry);
   private final Joystick m_joystickLeft = new Joystick(1);
   private final Joystick m_joystickRight = new Joystick(0);
   private final TankDrive m_tankDrive = new TankDrive(m_driveTrain, m_joystickLeft, m_joystickRight);
   private final WeirdTankDrive m_weirdTankDrive = new WeirdTankDrive(m_driveTrain, m_joystickLeft, m_joystickRight);
   private final XboxTankDrive m_XboxTankDrive = new XboxTankDrive(m_driveTrain, m_XBoxController);
   private final JoystickTankDrive m_joystickTankDrive = new JoystickTankDrive(m_driveTrain, m_joystickLeft, m_joystickRight);
+  private final PlainJoystickTankDrive m_plainJoystickTankDrive = new PlainJoystickTankDrive(m_driveTrain, m_joystickLeft, m_joystickRight);
   private final NearLight m_nearLight = new NearLight(m_TOF, m_LED);
+
   private final CollectorOut m_collectorOut = new CollectorOut(m_collector);
   private final CollectorReverse m_collectorReverse = new CollectorReverse(m_collector);
 
@@ -102,6 +118,8 @@ private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<C
 
   private final ClimberUp m_climberUp = new ClimberUp(m_climber);
   private final ClimberDown m_climberDown = new ClimberDown(m_climber);
+
+  private final DriveKinematics m_driveKinematics = new DriveKinematics(m_driveTrain);
 
   // Transfer commands
   private final TransferOutFront m_transferOutFront = new TransferOutFront(m_transfer, m_TOF);
@@ -175,7 +193,6 @@ private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<C
 
 
 
-
   private ParallelDeadlineGroup AutoUnload(){
     
     TransferOutFront m_transferOutFront = new TransferOutFront(m_transfer, m_TOF);
@@ -210,8 +227,20 @@ private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<C
     SequentialCommandGroup goTarget = new SequentialCommandGroup(m_targetGet, m_turn);
 
     return goTarget;
-  }
 
+  }
+   SequentialCommandGroup trajectoryautopartone(goToBall m_goToBall2){
+goToBall m_goToBall = new goToBall( m_driveTrain);
+return trajectoryautopartone(m_goToBall);
+
+  }
+ private SequentialCommandGroup fourthAuto(){
+   
+
+ //automover m_driveTrain = new TrajectoryGenerator.generateTrajectory(m_driveTrain);
+  SequentialCommandGroup fourthAuto = new SequentialCommandGroup(trajectoryautopartone(null) );
+  return fourthAuto; 
+} 
   private SequentialCommandGroup Auto(){
 
     SequentialCommandGroup auto = new SequentialCommandGroup(Pickup(), GoTarget(), AutoUnload());
@@ -240,32 +269,31 @@ private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<C
 
   }
 
-private SequentialCommandGroup ThirdAuto(){
-  TransferOutFront m_transferOut = new TransferOutFront(m_transfer, m_TOF);
+private Command ThirdAuto(){
+  TransferOutRear m_transferOut = new TransferOutRear(m_transfer, m_TOF);
   ParallelDeadlineGroup transferOutput = new ParallelDeadlineGroup(new WaitCommand(2), m_transferOut);
   SequentialCommandGroup elevator = new SequentialCommandGroup(ElevatorUp(), transferOutput, ElevatorDown());
   CollectorOut m_collectorOut = new CollectorOut(m_collector);
   TransferInAuto m_transferIn = new TransferInAuto(m_transfer);
+  DistanceDrive m_distanceDriveBackward = new DistanceDrive(m_driveTrain, -150);
 
-SequentialCommandGroup secondauto = SecondAuto();
-BallGet m_ballGet = new BallGet(m_driveTrain, m_TOF);
+  BallGet m_ballGet = new BallGet(m_driveTrain, m_TOF);
+  TOFDrive m_tofDrive = new TOFDrive(m_driveTrain, m_TOF);
 
-ParallelDeadlineGroup ballGrab = new ParallelDeadlineGroup(m_ballGet, m_collectorOut, m_transferIn);
+  SequentialCommandGroup ballGetDrive = new SequentialCommandGroup(m_ballGet, m_tofDrive);
 
-SequentialCommandGroup backToHub = new SequentialCommandGroup();
-SequentialCommandGroup AutoThree = new SequentialCommandGroup(ballGrab,new Turn(m_driveTrain), new backToHub(m_driveTrain),elevator);
+  ParallelDeadlineGroup ballGrab = new ParallelDeadlineGroup(ballGetDrive, m_collectorOut, m_transferIn);
 
-
-//BallGet m_ballGet = new BallGet(m_driveTrain, m_TOF);
+  //SequentialCommandGroup AutoThree = new SequentialCommandGroup(ballGrab, m_distanceDriveBackward, elevator);
 
 
-return AutoThree;
-}
+  return ballGrab;
+  }
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
    // m_driveTrain.setDefaultCommand(m_XboxTankDrive);
-    m_driveTrain.setDefaultCommand(m_joystickTankDrive);
+    m_driveTrain.setDefaultCommand(m_plainJoystickTankDrive);
     
     m_TOF.setDefaultCommand(m_TOFDistance);
     
@@ -288,7 +316,7 @@ return AutoThree;
     ballDGain.setNumber(.0075);
 
     NetworkTableEntry ballSpeed = table.getEntry("BallSpeed");
-    ballSpeed.setNumber(.25);
+    ballSpeed.setNumber(.15);
 
     NetworkTableEntry ballTimerGoal = table.getEntry("BallTimeGoal");
     ballTimerGoal.setNumber(5);
@@ -330,9 +358,9 @@ return AutoThree;
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
- /*  new JoystickButton(m_XBoxController, 1) //A
-    .whenPressed(m_autoForward);
-*/
+  /* new JoystickButton(m_XBoxController, 1) //A
+    .whenPressed(m_driveKinematics); */
+
     new JoystickButton(m_XBoxController, 2) //B
     .whenPressed(m_climberUp);
 
@@ -365,13 +393,19 @@ return AutoThree;
 
 
     new JoystickButton(m_joystickLeft, 1)
-        .whenPressed(m_ballAim);
+        .whenPressed(m_ballGet);
 
+new JoystickButton(m_joystickLeft, 10) //A
+.toggleWhenPressed(m_driveKinematics);
+
+//new JoystickButton(m_joystickLeft, 12)
+//.whenPressed(trajectoryautopartone(null));
 
     
-
+/*
     new JoystickButton(m_joystickLeft, 3)
-        .whenPressed(ElevatorUpClimb());
+        .whenPressed();
+*/
 
     new JoystickButton(m_joystickLeft, 4)
         .whenPressed(ElevatorDownClimb());
@@ -389,6 +423,11 @@ return AutoThree;
 */
 
 
+// testing testing
+    new JoystickButton(m_joystickRight, 11)
+        .whenPressed(m_ballAim);
+
+
 
   }
   /**
@@ -399,5 +438,7 @@ return AutoThree;
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return ThirdAuto();
+
   }
 }
+

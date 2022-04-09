@@ -8,12 +8,13 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.motorcontrol.PWMMotorController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
  // private Solenoid climberSolenoid = new Solenoid(0, PneumaticsModuleType.CTREPCM, 2);
 
-  private Servo climberMotor = new Servo(0);
+  private Servo climberMotor = new Servo(2);
  
   
   /** Creates a new Climber. */
@@ -26,10 +27,12 @@ public class Climber extends SubsystemBase {
 
   public void climberUp(){
     climberMotor.setAngle(90);
+    SmartDashboard.putNumber("ClimberAngle", climberMotor.getAngle());
   }
 
   public void climberDown(){
-    climberMotor.setAngle(250);
+    climberMotor.setAngle(190);
+    SmartDashboard.putNumber("ClimberAngle", climberMotor.getAngle());
    // climberSolenoid.set(false);
   }
 }

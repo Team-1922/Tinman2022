@@ -31,9 +31,12 @@ public final class Constants {
     public static final int transferRear = 12;
 
 
-        //we still need to check the conversion later
-    public static final double encoderInchConversion = 14500 / 18.8;
-    
+        //we still need to check the conversion later 
+    public static final double encoderInchConversion = 14500 / 18.8; // ticks per inch
+
+
+    public static final double encoderMeterConversion = (14500 / 0.47752) * .1; // ticks per 100ms as meters
+    // same as inches just converted it to meters
 	public static final int TOFRight = 11;
 	public static final int TOFLeft = 10;
 
@@ -47,8 +50,7 @@ public final class Constants {
 
     //climber
        
-    
-    // its so good, it doesn't need anything
+
 
 
 }

@@ -17,6 +17,7 @@ public class backToHub extends CommandBase {
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   NetworkTableEntry tx = table.getEntry("tx");
   NetworkTableEntry ty = table.getEntry("ty");
+  NetworkTableEntry thor = table.getEntry("thor");
 
 
   double error;
@@ -74,9 +75,6 @@ public class backToHub extends CommandBase {
   @Override
 
   public boolean isFinished() {
-    if (ty.getDouble(0.0) <-44.5){
-      return true;
-    }
-    return false;
+    return (ty.getDouble(0.0) < 20);
   }
 }

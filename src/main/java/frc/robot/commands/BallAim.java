@@ -13,7 +13,7 @@ import frc.robot.subsystems.DriveTrain;
 
 public class BallAim extends CommandBase {
   DriveTrain m_drivetrain;
-  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight-collect");
  NetworkTableEntry tx = table.getEntry("tx");
 
  double pipeline;
