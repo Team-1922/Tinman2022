@@ -229,18 +229,29 @@ private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<C
     return goTarget;
 
   }
-   SequentialCommandGroup trajectoryautopartone(goToBall m_goToBall2){
-goToBall m_goToBall = new goToBall( m_driveTrain);
-return trajectoryautopartone(m_goToBall);
+
+
+
+
+
+   Command trajectoryautopartone(){
+goToBall m_goToBall = new goToBall(m_driveTrain, 15);
+return m_goToBall;
 
   }
+
+
  private SequentialCommandGroup fourthAuto(){
    
 
  //automover m_driveTrain = new TrajectoryGenerator.generateTrajectory(m_driveTrain);
-  SequentialCommandGroup fourthAuto = new SequentialCommandGroup(trajectoryautopartone(null) );
+  SequentialCommandGroup fourthAuto = new SequentialCommandGroup(trajectoryautopartone() );
   return fourthAuto; 
 } 
+
+
+
+
   private SequentialCommandGroup Auto(){
 
     SequentialCommandGroup auto = new SequentialCommandGroup(Pickup(), GoTarget(), AutoUnload());
@@ -398,8 +409,8 @@ private Command ThirdAuto(){
 new JoystickButton(m_joystickLeft, 10) //A
 .toggleWhenPressed(m_driveKinematics);
 
-//new JoystickButton(m_joystickLeft, 12)
-//.whenPressed(trajectoryautopartone(null));
+new JoystickButton(m_joystickLeft, 12)
+.whenPressed(trajectoryautopartone());
 
     
 /*
@@ -437,7 +448,7 @@ new JoystickButton(m_joystickLeft, 10) //A
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return ThirdAuto();
+    return SecondAuto();
 
   }
 }

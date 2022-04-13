@@ -35,8 +35,8 @@ import frc.robot.Constants;
 
 
 public class DriveTrain extends SubsystemBase {
-  private String canBus// = "DriveBase";
-   = "";
+  private String canBus = "DriveBase";
+
   private WPI_TalonFX frontLeft = new WPI_TalonFX(Constants.frontLeft, canBus);
   private WPI_TalonFX frontRight = new WPI_TalonFX(Constants.frontRight, canBus);
   private WPI_TalonFX rearLeft = new WPI_TalonFX(Constants.rearLeft, canBus);
@@ -159,7 +159,10 @@ public class DriveTrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    pose = m_odometry.update(Rotation2d.fromDegrees(-m_ahrs.getAngle()), frontLeft.getSelectedSensorPosition(), frontRight.getSelectedSensorPosition());
+    pose = m_odometry.update(Rotation2d.fromDegrees(-m_ahrs.getAngle()), frontLeft.getSelectedSensorPosition() / 30365, frontRight.getSelectedSensorPosition() / 30365);
+    SmartDashboard.putNumber("CurrentPoseX", pose.getX());
+    SmartDashboard.putNumber("CurrentPoseY", pose.getY());
+    SmartDashboard.putNumber("CurrentPoseO", pose.getRotation().getDegrees());
  
   }
 
