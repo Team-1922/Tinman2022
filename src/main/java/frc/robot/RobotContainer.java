@@ -39,6 +39,7 @@ import frc.robot.commands.CollectorOut;
 import frc.robot.commands.CollectorReverse;
 import frc.robot.commands.DistanceDrive;
 import frc.robot.commands.DriveKinematics;
+import frc.robot.commands.DriveStraight;
 import frc.robot.commands.ElevateDown;
 import frc.robot.commands.ElevateDownClimb;
 import frc.robot.commands.ElevateUp;
@@ -48,8 +49,10 @@ import frc.robot.commands.NearLight;
 import frc.robot.commands.PlainJoystickTankDrive;
 import frc.robot.commands.TOFDistance;
 import frc.robot.commands.TOFDrive;
+import frc.robot.commands.TOFSeeBall;
 import frc.robot.commands.TankDrive;
 import frc.robot.commands.TargetGet;
+import frc.robot.commands.ToggleFlip;
 import frc.robot.commands.TransferIn;
 import frc.robot.commands.TransferInAuto;
 import frc.robot.commands.TransferOutFront;
@@ -59,6 +62,7 @@ import frc.robot.commands.WeirdTankDrive;
 import frc.robot.commands.XboxTankDrive;
 import frc.robot.commands.backToHub;
 import frc.robot.commands.goToBall;
+import frc.robot.commands.gofromBall;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.CompressorSubsystem;
@@ -108,6 +112,8 @@ private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<C
   private final XboxTankDrive m_XboxTankDrive = new XboxTankDrive(m_driveTrain, m_XBoxController);
   private final JoystickTankDrive m_joystickTankDrive = new JoystickTankDrive(m_driveTrain, m_joystickLeft, m_joystickRight);
   private final PlainJoystickTankDrive m_plainJoystickTankDrive = new PlainJoystickTankDrive(m_driveTrain, m_joystickLeft, m_joystickRight);
+  private final ToggleFlip m_toggleFlip = new ToggleFlip(m_driveTrain);
+  private final DriveStraight m_driveStraight = new DriveStraight(m_driveTrain, m_joystickLeft);
   private final NearLight m_nearLight = new NearLight(m_TOF, m_LED);
 
   private final CollectorOut m_collectorOut = new CollectorOut(m_collector);
@@ -140,6 +146,8 @@ private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<C
   private final Turn m_turn = new Turn(m_driveTrain);
   private final TargetGet m_targetGet = new TargetGet(m_driveTrain);
   private final Auto_forward m_autoForward = new Auto_forward(m_driveTrain);
+
+  private final goToBall m_goToBall = new goToBall(m_driveTrain, 15, false);
 
 
 
@@ -232,23 +240,61 @@ private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<C
 
 
 
-
+public Elevator getElevator() {
+  return m_elevator;
+}
 
    Command trajectoryautopartone(){
-goToBall m_goToBall = new goToBall(m_driveTrain, 15);
+  //  gofromBall m_goTfromBall = new gofromBall(m_driveTrain, 15);
+    goToBall m_goToBall = new goToBall(m_driveTrain, 15, false);
+//return m_goTfromBall, 
+
 return m_goToBall;
+
+   }
+
+
+Command trajectoryautoparttwo(){
+   gofromBall m_goTfromBall = new gofromBall(m_driveTrain, 15);
+    
+return m_goTfromBall; 
+
+
 
   }
 
 
- private SequentialCommandGroup fourthAuto(){
+ //private SequentialCommandGroup fourthAuto(){
+  //CollectorOut m_collectorOut = new CollectorOut(m_collector);
    
 
  //automover m_driveTrain = new TrajectoryGenerator.generateTrajectory(m_driveTrain);
-  SequentialCommandGroup fourthAuto = new SequentialCommandGroup(trajectoryautopartone() );
-  return fourthAuto; 
-} 
+ // SequentialCommandGroup fourthAuto = new SequentialCommandGroup(trajectoryautopartone() , new WaitCommand(2),trajectoryautoparttwo() 
+  //);
+  //return fourthAuto; 
+//} 
 
+private Command FourthAuto(){
+
+  goToBall moveForward = new goToBall(m_driveTrain, 8, false);
+ /* goToBall moveBack = new goToBall(m_driveTrain, -8, true);
+
+  TransferInAuto transfer = new TransferInAuto(m_transfer);
+  TransferOutRear transferOut = new TransferOutRear(m_transfer, m_TOF);
+  CollectorOut collector = new CollectorOut(m_collector);
+  TOFSeeBall TOF = new TOFSeeBall(m_TOF);
+  ElevateUp elevatorUp = new ElevateUp(m_elevator);
+  ElevateDown elevatorDown = new ElevateDown(m_elevator);
+
+
+  ParallelDeadlineGroup forward = new ParallelDeadlineGroup(TOF, transfer, collector, moveForward);
+  ParallelDeadlineGroup transferDeploy = new ParallelDeadlineGroup(new WaitCommand(2), transferOut);
+  SequentialCommandGroup deploy = new SequentialCommandGroup(elevatorUp, transferDeploy, elevatorDown);
+
+  SequentialCommandGroup move = new SequentialCommandGroup(forward, new WaitCommand(1), moveBack, deploy);
+*/
+  return moveForward;
+}
 
 
 
@@ -369,8 +415,8 @@ private Command ThirdAuto(){
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-  /* new JoystickButton(m_XBoxController, 1) //A
-    .whenPressed(m_driveKinematics); */
+   new JoystickButton(m_XBoxController, 1) //A
+    .whenPressed(ElevatorUpClimb()); 
 
     new JoystickButton(m_XBoxController, 2) //B
     .whenPressed(m_climberUp);
@@ -404,19 +450,19 @@ private Command ThirdAuto(){
 
 
     new JoystickButton(m_joystickLeft, 1)
-        .whenPressed(m_ballGet);
+        .whileHeld(m_driveStraight);
 
-new JoystickButton(m_joystickLeft, 10) //A
-.toggleWhenPressed(m_driveKinematics);
+    new JoystickButton(m_joystickLeft, 10) //A
+        .toggleWhenPressed(m_driveKinematics);
 
-new JoystickButton(m_joystickLeft, 12)
-.whenPressed(trajectoryautopartone());
+    new JoystickButton(m_joystickLeft, 12)
+        .whenPressed(FourthAuto());
 
     
-/*
+
     new JoystickButton(m_joystickLeft, 3)
-        .whenPressed();
-*/
+        .whenPressed(m_toggleFlip);
+
 
     new JoystickButton(m_joystickLeft, 4)
         .whenPressed(ElevatorDownClimb());
@@ -450,6 +496,10 @@ new JoystickButton(m_joystickLeft, 12)
     // An ExampleCommand will run in autonomous
     return SecondAuto();
 
+  }
+
+  public Command getDisabledCommand(){
+    return m_brakeAct;
   }
 }
 

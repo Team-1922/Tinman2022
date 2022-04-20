@@ -51,8 +51,12 @@ public class DriveTrain extends SubsystemBase {
 
   private double inchConversion = Constants.encoderInchConversion;
 
+  private boolean isFlipped = false;
+  
+
   /** Creates a new ExampleSubsystem. */
   public DriveTrain(AHRS ahrs, DifferentialDriveOdometry odometry) {
+    SmartDashboard.putBoolean("Flipped?", isFlipped);
 
     m_ahrs = ahrs;
     m_odometry = odometry;
@@ -100,6 +104,30 @@ public class DriveTrain extends SubsystemBase {
       frontLeft.set(moveLeft);
       frontRight.set(moveRight);
     } 
+
+  public void flipDrive(double moveLeft, double moveRight, boolean flipped){
+      if(flipped == true){
+        frontLeft.set(-moveLeft);
+        frontRight.set(-moveRight);
+      } else {
+        frontLeft.set(moveLeft);
+        frontRight.set(moveRight);
+      }
+  }
+
+  public boolean getFlipped(){
+        return isFlipped;
+  }
+
+  public void toggleFlipped(){
+    if( isFlipped == true){
+      isFlipped = false;
+    } else {
+      isFlipped = true;
+    }
+
+    SmartDashboard.putBoolean("Flipped?", isFlipped);
+  }
 
     public void velocityDrive(double speed){
       frontLeft.set(ControlMode.Velocity, speed);

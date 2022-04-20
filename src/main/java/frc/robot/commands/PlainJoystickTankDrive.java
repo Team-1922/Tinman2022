@@ -40,11 +40,21 @@ public class PlainJoystickTankDrive extends CommandBase {
 
 // because I do noooooot understand the new controls
 
-   m_drivetrain.drive(-m_joystickLeft.getY() * tankSpeed, -m_joystickRight.getY() * tankSpeed);
+if(m_drivetrain.getFlipped() == true){
+  m_drivetrain.flipDrive(
+    ((Math.pow(-m_joystickRight.getY(), 3) * .5 + -m_joystickRight.getY()) * tankSpeed), 
+    ((Math.pow(-m_joystickLeft.getY(), 3) * .5 + -m_joystickLeft.getY()) * tankSpeed),
+    m_drivetrain.getFlipped());
 
-  
+} else {
+
+   m_drivetrain.flipDrive(
+     ((Math.pow(-m_joystickLeft.getY(), 3) * .5 + -m_joystickLeft.getY()) * tankSpeed), 
+     ((Math.pow(-m_joystickRight.getY(), 3) * .5 + -m_joystickRight.getY()) * tankSpeed),
+     m_drivetrain.getFlipped());
    
   }
+}
 
   // Called once the command ends or is interrupted.
   @Override

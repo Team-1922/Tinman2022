@@ -106,14 +106,17 @@ public double posGoal(){
  public void brakeUp(){
   ElevatorSolenoid.set(false);
 
-   //SmartDashboard.putBoolean("BrakeState", ElevatorSolenoid.get());
+   SmartDashboard.putBoolean("BrakeState", ElevatorSolenoid.get());
+
+   System.out.println("Brake activated");
+
  }
 
 
  public void brakeDown(){
  ElevatorSolenoid.set(true);
 
- // SmartDashboard.putBoolean("BrakeState", ElevatorSolenoid.get());
+   SmartDashboard.putBoolean("BrakeState", ElevatorSolenoid.get());
 }
 
 
