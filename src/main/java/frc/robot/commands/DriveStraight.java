@@ -34,7 +34,11 @@ public class DriveStraight extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_driveTrain.flipDrive(-m_joystickLeft.getY(), -m_joystickLeft.getY(), m_driveTrain.getFlipped());
+   // m_driveTrain.flipDrive(-m_joystickLeft.getY(), -m_joystickLeft.getY(), m_driveTrain.getFlipped());
+    m_driveTrain.flipDrive(
+    ((Math.pow(-m_joystickLeft.getY(), 3) * .5 + -m_joystickLeft.getY()) * .2), 
+    ((Math.pow(-m_joystickLeft.getY(), 3) * .5 + -m_joystickLeft.getY()) * .2),
+    m_driveTrain.getFlipped());
   }
 
   // Called once the command ends or is interrupted.

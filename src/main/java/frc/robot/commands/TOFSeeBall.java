@@ -31,6 +31,6 @@ public class TOFSeeBall extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (m_TOF.getDistanceLeft() <= 25 && m_TOF.getDistanceRight() <= 50); 
+    return (m_TOF.getDistanceLeft() <= 50 && m_TOF.getDistanceRight() <= 50); 
   }
 }

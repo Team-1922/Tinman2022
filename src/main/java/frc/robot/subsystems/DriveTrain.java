@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
@@ -52,6 +53,7 @@ public class DriveTrain extends SubsystemBase {
   private double inchConversion = Constants.encoderInchConversion;
 
   private boolean isFlipped = false;
+  private boolean brakeMode = false;
   
 
   /** Creates a new ExampleSubsystem. */
@@ -183,6 +185,27 @@ public class DriveTrain extends SubsystemBase {
     }
 
 
+    public void setCoastMode(){
+      frontLeft.setNeutralMode(NeutralMode.Coast);
+      frontRight.setNeutralMode(NeutralMode.Coast);
+      rearLeft.setNeutralMode(NeutralMode.Coast);
+      rearRight.setNeutralMode(NeutralMode.Coast);
+
+      brakeMode = false;
+      SmartDashboard.putBoolean("DriveTrainBrake", brakeMode);
+      
+    }
+
+
+public void setBrakeMode(){
+      frontLeft.setNeutralMode(NeutralMode.Brake);
+      frontRight.setNeutralMode(NeutralMode.Brake);
+      rearLeft.setNeutralMode(NeutralMode.Brake);
+      rearRight.setNeutralMode(NeutralMode.Brake);
+
+      brakeMode = true;
+      SmartDashboard.putBoolean("DriveTrainBrake", brakeMode);
+    }
      
 
   @Override

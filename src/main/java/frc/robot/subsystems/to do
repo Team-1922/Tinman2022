@@ -1,3 +1,12 @@
 
-auto testing
+Fixing auto
 
+Connection issue
+    - Radio config?
+    - Works fine over ethernet connection so probably computer to radio error
+
+Dont forget to change team number in limelight config so it work good
+
+Actual Auto 
+    Transfer In either rips up the bottom or squishes the ball out hte rear, c
+    chnge rearMotor behavior in transferInAuto

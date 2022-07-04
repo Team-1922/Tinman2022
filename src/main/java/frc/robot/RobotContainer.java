@@ -61,6 +61,7 @@ import frc.robot.commands.Turn;
 import frc.robot.commands.WeirdTankDrive;
 import frc.robot.commands.XboxTankDrive;
 import frc.robot.commands.backToHub;
+import frc.robot.commands.curvyDrive;
 import frc.robot.commands.goToBall;
 import frc.robot.commands.gofromBall;
 import frc.robot.subsystems.Climber;
@@ -148,6 +149,7 @@ private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<C
   private final Auto_forward m_autoForward = new Auto_forward(m_driveTrain);
 
   private final goToBall m_goToBall = new goToBall(m_driveTrain, 15, false);
+  private final curvyDrive m_curvyDrive = new curvyDrive(m_driveTrain, false);
 
 
 
@@ -244,6 +246,11 @@ public Elevator getElevator() {
   return m_elevator;
 }
 
+public DriveTrain getDriveTrain(){
+  return m_driveTrain;
+}
+
+
    Command trajectoryautopartone(){
   //  gofromBall m_goTfromBall = new gofromBall(m_driveTrain, 15);
     goToBall m_goToBall = new goToBall(m_driveTrain, 15, false);
@@ -276,8 +283,8 @@ return m_goTfromBall;
 
 private Command FourthAuto(){
 
-  goToBall moveForward = new goToBall(m_driveTrain, 8, false);
- /* goToBall moveBack = new goToBall(m_driveTrain, -8, true);
+  goToBall moveForward = new goToBall(m_driveTrain, 10, false);
+  goToBall moveBack = new goToBall(m_driveTrain, -10, true);
 
   TransferInAuto transfer = new TransferInAuto(m_transfer);
   TransferOutRear transferOut = new TransferOutRear(m_transfer, m_TOF);
@@ -287,13 +294,15 @@ private Command FourthAuto(){
   ElevateDown elevatorDown = new ElevateDown(m_elevator);
 
 
-  ParallelDeadlineGroup forward = new ParallelDeadlineGroup(TOF, transfer, collector, moveForward);
+  ParallelDeadlineGroup getBall = new ParallelDeadlineGroup(TOF, transfer, collector);
+  ParallelCommandGroup forward = new ParallelCommandGroup(getBall, moveForward);
   ParallelDeadlineGroup transferDeploy = new ParallelDeadlineGroup(new WaitCommand(2), transferOut);
-  SequentialCommandGroup deploy = new SequentialCommandGroup(elevatorUp, transferDeploy, elevatorDown);
+  SequentialCommandGroup deploy = new SequentialCommandGroup(ElevatorUp(), transferDeploy, ElevatorDown());
 
   SequentialCommandGroup move = new SequentialCommandGroup(forward, new WaitCommand(1), moveBack, deploy);
-*/
-  return moveForward;
+
+ // SequentialCommandGroup move = new SequentialCommandGroup(moveForward, new WaitCommand(1), moveBack);
+  return move;
 }
 
 
@@ -393,9 +402,13 @@ private Command ThirdAuto(){
     NetworkTableEntry elevatorRotations = table.getEntry("ElevatorRotations");
     elevatorRotations.setNumber(85);
 
+
+    
     NetworkTableEntry tankSpeed = table.getEntry("TankSpeed");
-    tankSpeed.setNumber(.6);
+    tankSpeed.setNumber(.15);
     // set to .6
+
+
 
     NetworkTableEntry sideOutput = table.getEntry("SideOutput");
     sideOutput.setNumber(18000);
@@ -455,8 +468,8 @@ private Command ThirdAuto(){
     new JoystickButton(m_joystickLeft, 10) //A
         .toggleWhenPressed(m_driveKinematics);
 
-    new JoystickButton(m_joystickLeft, 12)
-        .whenPressed(FourthAuto());
+   // new JoystickButton(m_joystickLeft, 12)
+       // .whenPressed(m_curvyDrive);
 
     
 
@@ -494,7 +507,7 @@ private Command ThirdAuto(){
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return SecondAuto();
+    return FourthAuto();
 
   }
 

@@ -18,6 +18,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
@@ -72,7 +73,8 @@ public class goToBall extends CommandBase {
       Rotation2d.fromDegrees(0));
 */
 translation = new Translation2d(Units.feetToMeters(m_feet), Units.feetToMeters(0));
-transform = new Transform2d(translation, autoStart.getRotation());
+transform = new Transform2d(translation, //autoStart.getRotation());
+Rotation2d.fromDegrees(.01));
 
 getBall = autoStart.transformBy(transform);
 
@@ -83,7 +85,7 @@ getBall = autoStart.transformBy(transform);
   //interiorWaypoints.add(new Translation2d(Units.feetToMeters(feet / 2), Units.feetToMeters(1)));
 
   // start velocity , end velocity , reversed , constraints
-  TrajectoryConfig config = new TrajectoryConfig(0.25, 0.25);
+  TrajectoryConfig config = new TrajectoryConfig(.75, .75);
   config.setReversed(m_reversed);
 
   m_trajectorytest = TrajectoryGenerator.generateTrajectory(
@@ -93,6 +95,8 @@ getBall = autoStart.transformBy(transform);
 
   );
   
+  SmartDashboard.putNumber("TargetPoseX", getBall.getX());
+  SmartDashboard.putNumber("TargetPoseO", getBall.getRotation().getDegrees());
 
   }
 
@@ -114,12 +118,12 @@ m_driveTrain.kinematicsDrive(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond,
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_driveTrain.drive(0, 0);
+    m_driveTrain.velocityDrive(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (Math.abs(getBall.getX() - actualPose.getX()) <= .25);
+    return (Math.abs(getBall.getX() - actualPose.getX()) <= .1);
   }
 }

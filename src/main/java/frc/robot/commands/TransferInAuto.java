@@ -32,7 +32,7 @@ public class TransferInAuto extends CommandBase {
     
       m_transfer.sideMotor(6000); 
       m_transfer.frontMotor(6000); 
-      m_transfer.rearMotor(6000);
+      m_transfer.rearMotor(0);
 
   }
 
