@@ -283,8 +283,8 @@ return m_goTfromBall;
 
 private Command FourthAuto(){
 
-  goToBall moveForward = new goToBall(m_driveTrain, 10, false);
-  goToBall moveBack = new goToBall(m_driveTrain, -10, true);
+  goToBall moveForward = new goToBall(m_driveTrain, 8, false);
+  goToBall moveBack = new goToBall(m_driveTrain, -8, true);
 
   TransferInAuto transfer = new TransferInAuto(m_transfer);
   TransferOutRear transferOut = new TransferOutRear(m_transfer, m_TOF);
