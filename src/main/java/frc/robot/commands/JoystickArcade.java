@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
-public class JoystickTankDrive extends CommandBase {
+public class JoystickArcade extends CommandBase {
   DriveTrain m_drivetrain;
   Joystick m_joystickLeft;
   Joystick m_joystickRight;
@@ -18,7 +18,7 @@ public class JoystickTankDrive extends CommandBase {
   double tankSpeed;
  
   /** Creates a new JoystickTankDrive. */
-  public JoystickTankDrive(DriveTrain drivetrain, Joystick JoystickLeft, Joystick JoystickRight) {
+  public JoystickArcade(DriveTrain drivetrain, Joystick JoystickLeft, Joystick JoystickRight) {
     m_drivetrain = drivetrain;
     m_joystickLeft = JoystickLeft;
     m_joystickRight = JoystickRight;
@@ -51,7 +51,7 @@ public class JoystickTankDrive extends CommandBase {
    double arcadedrivepartone  = m_joystickLeft.getY()*throttleScale-m_joystickRight.getX()*turningScale;
    double arcadedriveparttwo =m_joystickLeft.getY()*throttleScale+m_joystickRight.getX()*turningScale;
 
-   m_drivetrain.drive(-arcadedrivepartone, -arcadedriveparttwo);
+   m_drivetrain.flipDrive(  -arcadedrivepartone, -arcadedriveparttwo, m_drivetrain.getFlipped());
 
   
    

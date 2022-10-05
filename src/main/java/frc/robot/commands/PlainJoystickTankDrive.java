@@ -38,23 +38,21 @@ public class PlainJoystickTankDrive extends CommandBase {
   @Override
   public void execute() {
 
+    double turningScale = 0.5*(1-Math.abs(m_joystickLeft.getY()/3))*0.5; 
+    double throttleScale = 0.6;
+   
+    
+   double arcadedrivepartone  = m_joystickLeft.getY()*throttleScale-m_joystickRight.getX()*turningScale;
+   double arcadedriveparttwo =m_joystickLeft.getY()*throttleScale+m_joystickRight.getX()*turningScale;
 // because I do noooooot understand the new controls
 
-if(m_drivetrain.getFlipped() == true){
   m_drivetrain.flipDrive(
     ((Math.pow(-m_joystickRight.getY(), 3) * .5 + -m_joystickRight.getY()) * tankSpeed), 
     ((Math.pow(-m_joystickLeft.getY(), 3) * .5 + -m_joystickLeft.getY()) * tankSpeed),
-    m_drivetrain.getFlipped());
-
-} else {
-
-   m_drivetrain.flipDrive(
-     ((Math.pow(-m_joystickLeft.getY(), 3) * .5 + -m_joystickLeft.getY()) * tankSpeed), 
-     ((Math.pow(-m_joystickRight.getY(), 3) * .5 + -m_joystickRight.getY()) * tankSpeed),
-     m_drivetrain.getFlipped());
-   
+    m_drivetrain.getFlipped()); 
+ 
   }
-}
+
 
   // Called once the command ends or is interrupted.
   @Override

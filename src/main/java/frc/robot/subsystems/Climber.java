@@ -23,16 +23,28 @@ public class Climber extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("ClimberAnglePeriodic", climberMotor.getAngle());
   }
 
   public void climberUp(){
-    climberMotor.setAngle(90);
+    climberMotor.setAngle(90); 
     SmartDashboard.putNumber("ClimberAngle", climberMotor.getAngle());
   }
 
   public void climberDown(){
-    climberMotor.setAngle(190);
+    climberMotor.setAngle(0); //Typically 190 testing for 0
     SmartDashboard.putNumber("ClimberAngle", climberMotor.getAngle());
    // climberSolenoid.set(false);
+  }
+
+  public void climberSet(double input){
+    climberMotor.setAngle(input);
+    SmartDashboard.putNumber("ClimberSetAngle", climberMotor.getAngle());
+  }
+
+
+  
+  public double climberAngle(){
+    return climberMotor.getAngle();
   }
 }

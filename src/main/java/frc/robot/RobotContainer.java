@@ -34,6 +34,8 @@ import frc.robot.commands.BrakeDeactivate;
 import frc.robot.commands.BrakeDown;
 import frc.robot.commands.BrakeUp;
 import frc.robot.commands.ClimberDown;
+import frc.robot.commands.ClimberSetMinus;
+import frc.robot.commands.ClimberSetPlus;
 import frc.robot.commands.ClimberUp;
 import frc.robot.commands.CollectorOut;
 import frc.robot.commands.CollectorReverse;
@@ -44,7 +46,7 @@ import frc.robot.commands.ElevateDown;
 import frc.robot.commands.ElevateDownClimb;
 import frc.robot.commands.ElevateUp;
 import frc.robot.commands.ElevateUpClimb;
-import frc.robot.commands.JoystickTankDrive;
+import frc.robot.commands.JoystickArcade;
 import frc.robot.commands.NearLight;
 import frc.robot.commands.PlainJoystickTankDrive;
 import frc.robot.commands.TOFDistance;
@@ -111,7 +113,7 @@ private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<C
   private final TankDrive m_tankDrive = new TankDrive(m_driveTrain, m_joystickLeft, m_joystickRight);
   private final WeirdTankDrive m_weirdTankDrive = new WeirdTankDrive(m_driveTrain, m_joystickLeft, m_joystickRight);
   private final XboxTankDrive m_XboxTankDrive = new XboxTankDrive(m_driveTrain, m_XBoxController);
-  private final JoystickTankDrive m_joystickTankDrive = new JoystickTankDrive(m_driveTrain, m_joystickLeft, m_joystickRight);
+  private final JoystickArcade m_JoystickArcade = new JoystickArcade(m_driveTrain, m_joystickLeft, m_joystickRight);
   private final PlainJoystickTankDrive m_plainJoystickTankDrive = new PlainJoystickTankDrive(m_driveTrain, m_joystickLeft, m_joystickRight);
   private final ToggleFlip m_toggleFlip = new ToggleFlip(m_driveTrain);
   private final DriveStraight m_driveStraight = new DriveStraight(m_driveTrain, m_joystickLeft);
@@ -125,6 +127,8 @@ private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<C
 
   private final ClimberUp m_climberUp = new ClimberUp(m_climber);
   private final ClimberDown m_climberDown = new ClimberDown(m_climber);
+  private final ClimberSetPlus m_climberSetPlus = new ClimberSetPlus(m_climber);
+  private final ClimberSetMinus m_climberSetMinus = new ClimberSetMinus(m_climber);
 
   private final DriveKinematics m_driveKinematics = new DriveKinematics(m_driveTrain);
 
@@ -141,6 +145,10 @@ private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<C
   private final BrakeDown m_brakeDown = new BrakeDown(m_elevator);
 
   // Auto Commands
+  private final SendableChooser<CommandBase> m_autoChooser = new SendableChooser<CommandBase>();
+
+  
+
   private final BallAim m_ballAim = new BallAim(m_driveTrain);
   private final BallGet m_ballGet = new BallGet(m_driveTrain, m_TOF);
   private final AutoBrakes m_autoBrakes = new AutoBrakes(m_elevator);
@@ -249,6 +257,9 @@ public Elevator getElevator() {
 public DriveTrain getDriveTrain(){
   return m_driveTrain;
 }
+//public tankchooser tankchooser(){
+  //return tankchooser();
+//}
 
 
    Command trajectoryautopartone(){
@@ -281,7 +292,7 @@ return m_goTfromBall;
   //return fourthAuto; 
 //} 
 
-private Command FourthAuto(){
+private SequentialCommandGroup FourthAuto(){
 
   goToBall moveForward = new goToBall(m_driveTrain, 8, false);
   goToBall moveBack = new goToBall(m_driveTrain, -8, true);
@@ -326,7 +337,7 @@ private Command FourthAuto(){
     ParallelDeadlineGroup ballGrab = new ParallelDeadlineGroup(m_ballGet, m_collectorOut, m_transferIn);
     SequentialCommandGroup elevator = new SequentialCommandGroup(ElevatorUp(), transferOutput, ElevatorDown());
 
-    SequentialCommandGroup auto2 = new SequentialCommandGroup(elevator, m_autoForward);
+    SequentialCommandGroup auto2 = new SequentialCommandGroup(elevator, new WaitCommand(6), m_autoForward);
     
 
     
@@ -359,7 +370,7 @@ private Command ThirdAuto(){
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
    // m_driveTrain.setDefaultCommand(m_XboxTankDrive);
-    m_driveTrain.setDefaultCommand(m_plainJoystickTankDrive);
+
     
     m_TOF.setDefaultCommand(m_TOFDistance);
     
@@ -368,8 +379,11 @@ private Command ThirdAuto(){
     // Configure the button bindings
     configureButtonBindings();
     initNetworkTable();
+    autoChooser();
+    tankchooser();
+    
+    m_driveTrain.setDefaultCommand(m_tankChooser.getSelected());
   }
-
 
 
   private void initNetworkTable(){
@@ -405,7 +419,7 @@ private Command ThirdAuto(){
 
     
     NetworkTableEntry tankSpeed = table.getEntry("TankSpeed");
-    tankSpeed.setNumber(.15);
+    tankSpeed.setNumber(.60);
     // set to .6
 
 
@@ -421,6 +435,30 @@ private Command ThirdAuto(){
   }
 
 
+
+
+
+
+  private void autoChooser(){
+    m_autoChooser.setDefaultOption("1-Ball (Second)", SecondAuto());
+    m_autoChooser.addOption("2-Ball (Fourth)", FourthAuto());
+
+    SmartDashboard.putData("AutoChooser", m_autoChooser);
+    
+  }
+
+   void tankchooser(){
+
+    m_tankChooser.setDefaultOption("arcade drive", m_JoystickArcade);
+    m_tankChooser.addOption("tank drive", m_plainJoystickTankDrive );
+    SmartDashboard.putData("Drive type", m_tankChooser);
+
+
+  }
+
+
+
+
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -432,7 +470,8 @@ private Command ThirdAuto(){
     .whenPressed(ElevatorUpClimb()); 
 
     new JoystickButton(m_XBoxController, 2) //B
-    .whenPressed(m_climberUp);
+   // .whenPressed(m_climberUp);
+      .whenPressed(m_climberUp);
 
     new JoystickButton(m_XBoxController, 3) //X
     .toggleWhenPressed(m_collectorReverse);
@@ -507,7 +546,7 @@ private Command ThirdAuto(){
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return FourthAuto();
+    return m_autoChooser.getSelected();
 
   }
 
