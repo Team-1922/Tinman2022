@@ -38,6 +38,7 @@ import frc.robot.commands.ClimberSetMinus;
 import frc.robot.commands.ClimberSetPlus;
 import frc.robot.commands.ClimberUp;
 import frc.robot.commands.CollectorOut;
+import frc.robot.commands.CollectorOut2;
 import frc.robot.commands.CollectorReverse;
 import frc.robot.commands.DistanceDrive;
 import frc.robot.commands.DriveKinematics;
@@ -56,6 +57,7 @@ import frc.robot.commands.TankDrive;
 import frc.robot.commands.TargetGet;
 import frc.robot.commands.ToggleFlip;
 import frc.robot.commands.TransferIn;
+import frc.robot.commands.TransferIn2;
 import frc.robot.commands.TransferInAuto;
 import frc.robot.commands.TransferOutFront;
 import frc.robot.commands.TransferOutRear;
@@ -119,8 +121,10 @@ private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<C
   private final DriveStraight m_driveStraight = new DriveStraight(m_driveTrain, m_joystickLeft);
   private final NearLight m_nearLight = new NearLight(m_TOF, m_LED);
 
+  // Collector
   private final CollectorOut m_collectorOut = new CollectorOut(m_collector);
   private final CollectorReverse m_collectorReverse = new CollectorReverse(m_collector);
+  private final CollectorOut2 m_collectorOut2 = new CollectorOut2(m_collector, m_XBoxController);
 
   private final BrakeActivate m_brakeAct = new BrakeActivate(m_elevator);
   private final BrakeDeactivate m_brakeDeact = new BrakeDeactivate(m_elevator);
@@ -136,6 +140,7 @@ private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<C
   private final TransferOutFront m_transferOutFront = new TransferOutFront(m_transfer, m_TOF);
   private final TransferOutRear m_transferOutRear = new TransferOutRear(m_transfer, m_TOF);
   private final TransferIn m_transferIn = new TransferIn(m_transfer, m_TOF);
+  private final TransferIn2 m_transferIn2 = new TransferIn2(m_transfer, m_TOF, m_XBoxController);
  
   // elevooter
   private final ElevateDown m_elevateDown = new ElevateDown(m_elevator);
@@ -383,6 +388,9 @@ private Command ThirdAuto(){
     tankchooser();
     
     m_driveTrain.setDefaultCommand(m_tankChooser.getSelected());
+
+    m_collector.setDefaultCommand(m_collectorOut2);
+    m_transfer.setDefaultCommand(m_transferIn2);
   }
 
 
@@ -467,15 +475,15 @@ private Command ThirdAuto(){
    */
   private void configureButtonBindings() {
    new JoystickButton(m_XBoxController, 1) //A
-    .whenPressed(ElevatorUpClimb()); 
+    .whenPressed(m_climberUp); 
 
-    new JoystickButton(m_XBoxController, 2) //B
+  /*  new JoystickButton(m_XBoxController, 2) //B
    // .whenPressed(m_climberUp);
-      .whenPressed(m_climberUp);
-
-    new JoystickButton(m_XBoxController, 3) //X
-    .toggleWhenPressed(m_collectorReverse);
-
+      .whenPressed(m_collectorReverse);
+*/ 
+ /*   new JoystickButton(m_XBoxController, 3) //X
+    .toggleWhenPressed();
+*/
     new JoystickButton(m_XBoxController, 4) //Y
     .whenPressed(m_climberDown);
 
@@ -488,17 +496,17 @@ private Command ThirdAuto(){
 
 
     new JoystickButton(m_XBoxController, 7) // Left Menu
-    .whileHeld(m_transferIn);
+    .whileHeld(ElevatorUp());
 
     new JoystickButton(m_XBoxController, 8) // Right Menu
-      .toggleWhenPressed(m_collectorOut);
-
+      .toggleWhenPressed(ElevatorDown());
+/*
     new JoystickButton(m_XBoxController, 9)
-      .whenPressed(ElevatorUp());
+      .whenPressed();
 
     new JoystickButton(m_XBoxController, 10)
-      .whenPressed(ElevatorDown());
-
+      .whenPressed();
+*/
 
 
     new JoystickButton(m_joystickLeft, 1)

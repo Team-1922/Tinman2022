@@ -106,6 +106,7 @@ public class Robot extends TimedRobot {
   
   @Override
   public void teleopInit() {
+    m_robotContainer.getDriveTrain();
     m_robotContainer.getDriveTrain().setCoastMode();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
