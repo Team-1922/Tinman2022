@@ -447,17 +447,21 @@ private Command ThirdAuto(){
     
   }
 
-   void tankchooser(){
+   public void tankchooser(){
 
     m_tankChooser.setDefaultOption("arcade drive", m_JoystickArcade);
     m_tankChooser.addOption("tank drive", m_plainJoystickTankDrive );
     SmartDashboard.putData("Drive type", m_tankChooser);
 
 
+    
   }
 
+ public Command getSelecteddriveControl(){
 
-
+return m_tankChooser.getSelected();
+ }
+ 
 
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
