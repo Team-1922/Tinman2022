@@ -29,8 +29,21 @@ double startInput = 0;
   // Called when the command is initially scheduled hehe i change it to execute
   @Override
   public void execute() {
+
+
+if(m_xbox.getRawAxis(3) >= .1){
+  m_collector.collect();
+} else {
+  m_collector.stopCollect();
+}
+
+}
+
+
+/*
+
     // if (change in pushed value) is up, toggle 'on'
-    if(m_xbox.getRawAxis(3) - startInput > 0){
+    if(m_xbox.getRawAxis(3) - startInput > 0){ // Shoots out immediately? Work on that issue, prob w/ this line
       if(on = true){
         on = false;
       } else {
@@ -49,6 +62,10 @@ double startInput = 0;
     startInput = m_xbox.getRawAxis(3);
 
     }
+
+*/
+
+
 
 
   @Override
