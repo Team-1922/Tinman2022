@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
@@ -33,6 +34,7 @@ public class Robot extends TimedRobot {
   private Command m_disabledCommand;
 
   private RobotContainer m_robotContainer;
+  
   
 
   /**
@@ -106,8 +108,13 @@ public class Robot extends TimedRobot {
   
   @Override
   public void teleopInit() {
+<<<<<<< HEAD
     m_robotContainer.getDriveTrain();
+=======
+    m_robotContainer.getDriveTrain().setDefaultCommand(m_robotContainer.getSelecteddriveControl());
+>>>>>>> aa52f831d4da70382b0f53223c16584f95c00b23
     m_robotContainer.getDriveTrain().setCoastMode();
+   
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -120,12 +127,10 @@ public class Robot extends TimedRobot {
 
   }
 
-
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
     
-
 
   }
 
