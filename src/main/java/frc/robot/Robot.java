@@ -108,11 +108,11 @@ public class Robot extends TimedRobot {
   
   @Override
   public void teleopInit() {
-<<<<<<< HEAD
+
     m_robotContainer.getDriveTrain();
-=======
+
     m_robotContainer.getDriveTrain().setDefaultCommand(m_robotContainer.getSelecteddriveControl());
->>>>>>> aa52f831d4da70382b0f53223c16584f95c00b23
+
     m_robotContainer.getDriveTrain().setCoastMode();
    
     // This makes sure that the autonomous stops running when

@@ -8,6 +8,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
 
 public class DriveStraight extends CommandBase {
@@ -35,10 +36,17 @@ public class DriveStraight extends CommandBase {
   @Override
   public void execute() {
    // m_driveTrain.flipDrive(-m_joystickLeft.getY(), -m_joystickLeft.getY(), m_driveTrain.getFlipped());
-    m_driveTrain.flipDrive(
+ 
+ 
+ 
+   m_driveTrain.velocityDrive((Math.pow(-m_joystickLeft.getY(), 3) * .5 + -m_joystickLeft.getY()) * .2 * Constants.maxVelocity);
+ 
+
+   /*  m_driveTrain.flipDrive(
     ((Math.pow(-m_joystickLeft.getY(), 3) * .5 + -m_joystickLeft.getY()) * .2), 
     ((Math.pow(-m_joystickLeft.getY(), 3) * .5 + -m_joystickLeft.getY()) * .2),
     m_driveTrain.getFlipped());
+    */
   }
 
   // Called once the command ends or is interrupted.

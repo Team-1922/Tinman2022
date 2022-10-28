@@ -1,10 +1,4 @@
 
-Fixing auto
-
-Connection issue
-    - Radio config?
-    - Works fine over ethernet connection so probably computer to radio error
-
 Dont forget to change team number in limelight config so it work good
 
 Actual Auto 
@@ -15,4 +9,16 @@ Actual Auto
 
 
 
-    add tankchooser to telliopinnit
+
+
+
+
+
+
+
+
+    transfer SPEED? and see if other speesd fix hte intake issue
+    make sure to keep track of original values, don't want t persmanently lose them
+
+    use **(transferIn2)**
+    

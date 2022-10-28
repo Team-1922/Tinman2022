@@ -457,8 +457,8 @@ private Command ThirdAuto(){
 
    public void tankchooser(){
 
-    m_tankChooser.setDefaultOption("arcade drive", m_JoystickArcade);
-    m_tankChooser.addOption("tank drive", m_plainJoystickTankDrive );
+    m_tankChooser.setDefaultOption("tankDrive", m_plainJoystickTankDrive);
+    m_tankChooser.addOption("arcadeDrive", m_JoystickArcade );
     SmartDashboard.putData("Drive type", m_tankChooser);
 
 
@@ -488,6 +488,17 @@ return m_tankChooser.getSelected();
  /*   new JoystickButton(m_XBoxController, 3) //X
     .toggleWhenPressed();
 */
+/*
+    new JoystickButton(m_XBoxController, 2)
+    .whenHeld(m_transferIn2);
+*/
+    
+    new JoystickButton(m_XBoxController, 3)
+    .toggleWhenPressed(m_collectorReverse);
+
+
+
+
     new JoystickButton(m_XBoxController, 4) //Y
     .whenPressed(m_climberDown);
 
@@ -495,12 +506,12 @@ return m_tankChooser.getSelected();
     new JoystickButton(m_XBoxController, 5) //Left bumper 
     .whileHeld(m_transferOutFront);
 
-    new JoystickButton(m_XBoxController, 6) // Right bumper
-    .whileHeld(m_transferOutRear);
+    //new JoystickButton(m_XBoxController, 6) // Right bumper
+  //  .whileHeld(m_transferOutRear);
 
 
     new JoystickButton(m_XBoxController, 7) // Left Menu
-    .whileHeld(ElevatorUp());
+    .whenPressed(ElevatorUp());
 
     new JoystickButton(m_XBoxController, 8) // Right Menu
       .toggleWhenPressed(ElevatorDown());
@@ -516,9 +527,9 @@ return m_tankChooser.getSelected();
     new JoystickButton(m_joystickLeft, 1)
         .whileHeld(m_driveStraight);
 
-    new JoystickButton(m_joystickLeft, 10) //A
+ /*   new JoystickButton(m_joystickLeft, 10) //A
         .toggleWhenPressed(m_driveKinematics);
-
+*/
    // new JoystickButton(m_joystickLeft, 12)
        // .whenPressed(m_curvyDrive);
 
@@ -535,6 +546,29 @@ return m_tankChooser.getSelected();
         .whenPressed(new InstantCommand
         (m_compressorSubsystem::compressortoggle,m_compressorSubsystem ));
 
+
+
+
+    new JoystickButton(m_joystickRight, 5)
+        .whenPressed(ElevatorUpClimb());
+        
+    new JoystickButton(m_joystickRight, 3)
+        .whenPressed(ElevatorDownClimb());
+
+      new JoystickButton(m_joystickRight, 10)
+       .whenPressed(m_brakeDeact);
+ 
+        
+      new JoystickButton(m_joystickRight, 12)
+      .whenPressed(m_brakeAct);
+
+
+      
+
+
+
+       
+
 /*
     new JoystickButton(m_joystickLeft, 5)
         .whenPressed(m_climberUp);
@@ -543,11 +577,11 @@ return m_tankChooser.getSelected();
         .whenPressed(m_climberDown);
 */
 
-
+/*
 // testing testing
     new JoystickButton(m_joystickRight, 11)
         .whenPressed(m_ballAim);
-
+*/
 
 
   }

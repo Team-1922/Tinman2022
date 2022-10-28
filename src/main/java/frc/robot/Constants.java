@@ -51,6 +51,9 @@ public final class Constants {
     //climber
        
 
+    // Maximum Velocity measured at 100% output
+    public static final int maxVelocity = 20300;
+
 
 
 }
