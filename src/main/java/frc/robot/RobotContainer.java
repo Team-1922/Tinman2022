@@ -64,6 +64,7 @@ import frc.robot.commands.TransferOutRear;
 import frc.robot.commands.Turn;
 import frc.robot.commands.WeirdTankDrive;
 import frc.robot.commands.XboxTankDrive;
+import frc.robot.commands.aprilTagAim;
 import frc.robot.commands.backToHub;
 import frc.robot.commands.curvyDrive;
 import frc.robot.commands.goToBall;
@@ -151,6 +152,16 @@ private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<C
 
   // Auto Commands
   private final SendableChooser<CommandBase> m_autoChooser = new SendableChooser<CommandBase>();
+
+
+
+  // New Vision Stuff w/ PhotonVision
+  private final aprilTagAim m_aprilTagAim = new aprilTagAim(m_driveTrain);
+
+
+
+
+
 
   
 
@@ -515,10 +526,10 @@ return m_tankChooser.getSelected();
 
     new JoystickButton(m_XBoxController, 8) // Right Menu
       .toggleWhenPressed(ElevatorDown());
-/*
-    new JoystickButton(m_XBoxController, 9)
-      .whenPressed();
 
+    new JoystickButton(m_XBoxController, 9)
+      .whenPressed(m_aprilTagAim);
+/*
     new JoystickButton(m_XBoxController, 10)
       .whenPressed();
 */
@@ -593,6 +604,7 @@ return m_tankChooser.getSelected();
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return m_autoChooser.getSelected();
+  
 
   }
 

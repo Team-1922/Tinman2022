@@ -9,16 +9,8 @@ Actual Auto
 
 
 
+fix TOF
 
 
-
-
-
-
-
-
-    transfer SPEED? and see if other speesd fix hte intake issue
-    make sure to keep track of original values, don't want t persmanently lose them
-
-    use **(transferIn2)**
-    
+AprilTags w/ photonLib
+ - practice photonlib

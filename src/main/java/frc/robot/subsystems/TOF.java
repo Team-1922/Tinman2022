@@ -24,7 +24,10 @@ public class TOF extends SubsystemBase {
   @Override
   public void periodic() {
 
+
   }
+
+  
   
 
   public void putDistance(double left, double right){
@@ -46,7 +49,7 @@ public class TOF extends SubsystemBase {
     SmartDashboard.putBoolean("RightStatus", rightStatus);
 
     SmartDashboard.putNumber("TOFRight16", TOFRight.getRange());
-  }
+  } 
 
   public double getDistanceLeft(){
     return TOFLeft.getRange();
