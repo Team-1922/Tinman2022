@@ -20,6 +20,7 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -69,6 +70,7 @@ import frc.robot.commands.backToHub;
 import frc.robot.commands.curvyDrive;
 import frc.robot.commands.goToBall;
 import frc.robot.commands.gofromBall;
+import frc.robot.commands.pneumaticSensor;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.CompressorSubsystem;
@@ -121,6 +123,7 @@ private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<C
   private final ToggleFlip m_toggleFlip = new ToggleFlip(m_driveTrain);
   private final DriveStraight m_driveStraight = new DriveStraight(m_driveTrain, m_joystickLeft);
   private final NearLight m_nearLight = new NearLight(m_TOF, m_LED);
+  private final pneumaticSensor m_pneumatic = new pneumaticSensor();
 
   // Collector
   private final CollectorOut m_collectorOut = new CollectorOut(m_collector);
@@ -475,6 +478,25 @@ private Command ThirdAuto(){
 
     
   }
+  public void airToggle(){
+    AnalogInput pneumatic = new AnalogInput(0);
+  if (m_compressorSubsystem.pneumaticSensor(pneumatic) >100){
+    m_compressorSubsystem.compressortoggle();
+
+
+  } 
+//  public void airtoggle
+ 
+// m_compssorSubsy
+
+  
+ // m_compressorSubsystem.setDefaultCommand(airToggle());
+  if (m_compressorSubsystem.pneumaticSensor(pneumatic) <100)
+    m_compressorSubsystem.compressortoggle();
+  
+// return m_compressorSubsystem.compressorStatus();
+
+  }
 
  public Command getSelecteddriveControl(){
 
@@ -528,7 +550,7 @@ return m_tankChooser.getSelected();
       .toggleWhenPressed(ElevatorDown());
 
     new JoystickButton(m_XBoxController, 9)
-      .whenPressed(m_aprilTagAim);
+      .whenPressed(m_pneumatic);
 /*
     new JoystickButton(m_XBoxController, 10)
       .whenPressed();
@@ -576,7 +598,11 @@ return m_tankChooser.getSelected();
 
       
 
+      // new JoystickButton(m_joystickLeft, 7)
+   //
+    //.toggleWhenPressed(airToggle());
 
+  //buttonNumb
 
        
 
