@@ -65,6 +65,7 @@ import frc.robot.commands.TransferOutRear;
 import frc.robot.commands.Turn;
 import frc.robot.commands.WeirdTankDrive;
 import frc.robot.commands.XboxTankDrive;
+import frc.robot.commands.airtogglething;
 import frc.robot.commands.aprilTagAim;
 import frc.robot.commands.backToHub;
 import frc.robot.commands.curvyDrive;
@@ -110,6 +111,7 @@ private final DifferentialDriveOdometry m_odometry = new DifferentialDriveOdomet
 
 private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<CommandBase>();
 
+  private final airtogglething m_airtogglething = new airtogglething(); 
 
   private final TOFDistance m_TOFDistance = new TOFDistance(m_TOF);
   private final DriveTrain m_driveTrain = new DriveTrain(m_ahrs, m_odometry);
@@ -123,7 +125,7 @@ private final SendableChooser<CommandBase> m_tankChooser = new SendableChooser<C
   private final ToggleFlip m_toggleFlip = new ToggleFlip(m_driveTrain);
   private final DriveStraight m_driveStraight = new DriveStraight(m_driveTrain, m_joystickLeft);
   private final NearLight m_nearLight = new NearLight(m_TOF, m_LED);
-  private final pneumaticSensor m_pneumatic = new pneumaticSensor();
+  private final pneumaticSensor m_pneumaticSensor = new pneumaticSensor();
 
   // Collector
   private final CollectorOut m_collectorOut = new CollectorOut(m_collector);
@@ -478,9 +480,9 @@ private Command ThirdAuto(){
 
     
   }
-  public void airToggle(){
+   public void airToggle(){
     AnalogInput pneumatic = new AnalogInput(0);
-  if (m_compressorSubsystem.pneumaticSensor(pneumatic) >100){
+  if (m_compressorSubsystem.pneumaticSensor(pneumatic) >1){
     m_compressorSubsystem.compressortoggle();
 
 
@@ -491,7 +493,7 @@ private Command ThirdAuto(){
 
   
  // m_compressorSubsystem.setDefaultCommand(airToggle());
-  if (m_compressorSubsystem.pneumaticSensor(pneumatic) <100)
+  if (m_compressorSubsystem.pneumaticSensor(pneumatic) <1)
     m_compressorSubsystem.compressortoggle();
   
 // return m_compressorSubsystem.compressorStatus();
@@ -550,7 +552,7 @@ return m_tankChooser.getSelected();
       .toggleWhenPressed(ElevatorDown());
 
     new JoystickButton(m_XBoxController, 9)
-      .whenPressed(m_pneumatic);
+      .whenPressed(m_pneumaticSensor);
 /*
     new JoystickButton(m_XBoxController, 10)
       .whenPressed();
@@ -579,7 +581,8 @@ return m_tankChooser.getSelected();
         .whenPressed(new InstantCommand
         (m_compressorSubsystem::compressortoggle,m_compressorSubsystem ));
 
-
+    new JoystickButton(m_joystickLeft, 11)
+    .whenPressed(m_airtogglething);
 
 
     new JoystickButton(m_joystickRight, 5)
